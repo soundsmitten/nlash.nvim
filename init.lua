@@ -758,6 +758,7 @@ require('lazy').setup({
           --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
         },
         sources = {
+          { name = 'copilot' },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'buffer ' },
@@ -770,6 +771,8 @@ require('lazy').setup({
           format = require('lspkind').cmp_format {
             maxwidth = 50,
             ellipsis_char = '...',
+            mode = 'symbol',
+            symbol_map = { Copilot = '' },
           },
         },
       }
@@ -876,9 +879,9 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
---require 'kickstart.plugins.debug',
+  --require 'kickstart.plugins.debug',
   require 'kickstart.plugins.indent_line',
---require 'kickstart.plugins.lint',
+  --require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
