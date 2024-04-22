@@ -585,7 +585,32 @@ require('lazy').setup({
         },
       }
 
-      require('lspconfig').sourcekit.setup {}
+      -- refactor
+      local lspconfig = require 'lspconfig'
+      local cmp_nvim_lsp = require 'cmp_nvim_lsp'
+      local capabilities = cmp_nvim_lsp.default_capabilities()
+      local opts = { noremap = true, silent = true }
+      local on_attach = function(_, bufnr)
+        opts.buffer = bufnr
+
+        opts.desc = 'Show line diagnostics'
+        vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, opts)
+
+        opts.desc = 'Show documentation for what is under cursor'
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+      end
+
+      lspconfig['sourcekit'].setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+      }
+
+      -- nice icons
+      local signs = { Error = ' ', Warn = ' ', Hint = '󰠠 ', Info = ' ' }
+      for type, icon in pairs(signs) do
+        local hl = 'DiagnosticSign' .. type
+        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
+      end
 
       -- Ensure the servers and tools above are installed
       --  To check the current status of installed tools and/or manually install
@@ -651,8 +676,14 @@ require('lazy').setup({
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
         -- javascript = { { "prettierd", "prettier" } },
-        swift = { 'swiftformat' },
+        --      swift = { 'swiftformat' },
       },
+      --    formatters = {
+      --      swiftformat = {
+      --        command = 'swiftformat',
+      --        args = { 'swiftformat --disable wrapMultilineStatementBraces stripunusedargs hoistPatternLet' },
+      --      },
+      --    },
     },
   },
 
@@ -728,7 +759,7 @@ require('lazy').setup({
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
-          ['<CR>'] = cmp.mapping.confirm { select = false, behavior = cmp.ConfirmBehavior.Replace },
+          ['<C-g>'] = cmp.mapping.confirm { select = false, behavior = cmp.ConfirmBehavior.Replace },
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
@@ -913,6 +944,16 @@ require('lazy').setup({
     },
   },
 })
+
+-- move these later
+local opt = vim.opt
+
+opt.tabstop = 4
+opt.softtabstop = 4
+opt.shiftwidth = 4
+opt.expandtab = true
+opt.smartindent = true
+opt.swapfile = false
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
