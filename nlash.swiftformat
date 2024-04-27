@@ -10,8 +10,8 @@
 --indent 4 #indent
 --ifdef no-indent #indent
 --indentstrings true #indent
---wraparguments before-first # wrapArguments
---wrapparameters before-first # wrapArguments
+--wraparguments after-first # wrapArguments
+--wrapparameters after-first # wrapArguments
 --wrapcollections before-first # wrapArguments
 --wrapconditions before-first # wrapArguments
 --wrapreturntype if-multiline #wrapArguments
@@ -66,7 +66,7 @@
 --rules trailingSpace
 --rules typeSugar
 --rules wrap
---rules wrapMultilineStatementBraces
+# --rules wrapMultilineStatementBraces
 --rules wrapArguments
 --rules wrapAttributes
 --rules braces
