@@ -10,6 +10,14 @@ return {
       vim.keymap.set('n', '<leader>db', function()
         oil.open(nil)
       end),
+
+      vim.keymap.set('n', '<leader>g.', function()
+        oil.toggle_hidden()
+      end),
+
+      view_options = {
+        show_hidden = false,
+      },
     }
   end,
 
