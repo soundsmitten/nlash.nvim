@@ -52,8 +52,8 @@
 --rules indent
 # --rules organizeDeclarations
 --rules redundantParens
---rules redundantReturn
---rules redundantSelf
+# --rules redundantReturn
+# --rules redundantSelf
 --rules redundantType
 --rules redundantPattern
 --rules redundantGet
