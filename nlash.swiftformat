@@ -10,13 +10,13 @@
 --indent 4 #indent
 --ifdef no-indent #indent
 --indentstrings true #indent
---wraparguments after-first # wrapArguments
---wrapparameters after-first # wrapArguments
+--wraparguments before-first # wrapArguments
+--wrapparameters before-first # wrapArguments
 --wrapcollections before-first # wrapArguments
 --wrapconditions before-first # wrapArguments
---wrapreturntype if-multiline #wrapArguments
+# --wrapreturntype if-multiline #wrapArguments
 --wrapeffects if-multiline #wrapArguments
---closingparen same-line # wrapArguments
+--closingparen balanced # wrapArguments
 --wraptypealiases before-first # wrapArguments
 --funcattributes prev-line # wrapAttributes
 #--complexattrs prev-line # wrapAttributes
@@ -33,13 +33,13 @@
 --someAny disabled # opaqueGenericParameters
 --elseposition same-line #elseOnSameLine
 --guardelse same-line #elseOnSameLine
---onelineforeach convert #preferForLoop
+# --onelineforeach convert #preferForLoop
 --shortoptionals always #typeSugar
 --semicolons never #semicolons
 --doccomments preserve #docComments
 
 # We recommend a max width of 100 but _strictly enforce_ a max width of 130
---maxwidth 130 # wrap
+# --maxwidth 130 # wrap
 
 # rules
 --rules anyObjectProtocol
@@ -94,7 +94,7 @@
 --rules trailingClosures
 --rules elseOnSameLine
 --rules sortTypealiases
---rules preferForLoop
+# --rules preferForLoop
 --rules conditionalAssignment
 --rules wrapMultilineConditionalAssignment
 --rules semicolons
