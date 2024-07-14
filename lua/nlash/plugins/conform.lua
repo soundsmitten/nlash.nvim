@@ -24,6 +24,13 @@ return {
             return vim.fs.basename(ctx.filename) ~= 'README.md'
           end,
         },
+        golines = {
+          command = 'golines',
+          args = { '-w', '$FILENAME' },
+          condition = function(ctx)
+            return vim.fs.basename(ctx.filename) ~= 'README.md'
+          end,
+        },
       },
       vim.keymap.set({ 'n', 'v' }, '<leader>ff', function()
         conform.format {

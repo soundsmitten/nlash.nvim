@@ -1,7 +1,7 @@
-require('nlash.opt')
-require('nlash.keymap')
-require('nlash.lazy_init')
-require('nlash.health')
+require 'nlash.opt'
+require 'nlash.keymap'
+require 'nlash.lazy_init'
+require 'nlash.health'
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
