@@ -100,11 +100,11 @@ return { -- Autocompletion
         --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
       },
       sources = {
-        { name = 'copilot' },
         { name = 'nvim_lsp' },
         { name = 'luasnip' },
-        { name = 'buffer ' },
+        { name = 'buffer' },
         { name = 'path' },
+        { name = 'copilot' },
       },
 
       -- configure lspkind for vs-code like pictograms
