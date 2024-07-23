@@ -65,6 +65,17 @@ return { -- Fuzzy Finder (files, lsp, etc)
     pcall(require('telescope').load_extension, 'fzf')
     pcall(require('telescope').load_extension, 'ui-select')
 
+    local open_with_trouble = require('trouble.sources.telescope').open
+    local telescope = require 'telescope'
+
+    telescope.setup {
+      defaults = {
+        mappings = {
+          i = { ['<c-t>'] = open_with_trouble },
+          n = { ['<c-t>'] = open_with_trouble },
+        },
+      },
+    }
     -- See `:help telescope.builtin`
     local builtin = require 'telescope.builtin'
     vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })

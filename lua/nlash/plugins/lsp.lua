@@ -10,8 +10,8 @@ return { -- LSP Configuration & Plugins
     -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
     { 'j-hui/fidget.nvim', opts = {
       logger = {
-        path = string.format("%s/fidget.nvim.log", vim.fn.stdpath("cache"))
-      }
+        path = string.format('%s/fidget.nvim.log', vim.fn.stdpath 'cache'),
+      },
     } },
 
     -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
@@ -193,7 +193,13 @@ return { -- LSP Configuration & Plugins
     end
 
     lspconfig['sourcekit'].setup {
-      capabilities = capabilities,
+      capabilities = vim.tbl_deep_extend('force', capabilities, {
+        workspace = {
+          didChangeWatchedFiles = {
+            dynamicRegistration = true,
+          },
+        },
+      }),
       on_attach = on_attach,
     }
 
