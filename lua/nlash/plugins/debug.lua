@@ -5,6 +5,36 @@
 -- Primarily focused on configuring the debugger for Go, but can
 -- be extended to other languages as well. That's why it's called
 -- kickstart.nvim and not kitchen-sink.nvim ;)
+local function setupListeners()
+  local dap = require 'dap'
+  local areSet = false
+
+  dap.listeners.after['event_initialized']['me'] = function()
+    if not areSet then
+      areSet = true
+      vim.keymap.set('n', '<leader>dc', dap.continue, { desc = 'Continue', noremap = true })
+      vim.keymap.set('n', '<leader>dC', dap.run_to_cursor, { desc = 'Run To Cursor' })
+      vim.keymap.set('n', '<leader>ds', dap.step_over, { desc = 'Step Over' })
+      vim.keymap.set('n', '<leader>di', dap.step_into, { desc = 'Step Into' })
+      vim.keymap.set('n', '<leader>do', dap.step_out, { desc = 'Step Out' })
+      vim.keymap.set({ 'n', 'v' }, '<Leader>dh', require('dap.ui.widgets').hover, { desc = 'Hover' })
+      vim.keymap.set({ 'n', 'v' }, '<Leader>de', require('dapui').eval, { desc = 'Eval' })
+    end
+  end
+
+  dap.listeners.after['event_terminated']['me'] = function()
+    if areSet then
+      areSet = false
+      vim.keymap.del('n', '<leader>dc')
+      vim.keymap.del('n', '<leader>dC')
+      vim.keymap.del('n', '<leader>ds')
+      vim.keymap.del('n', '<leader>di')
+      vim.keymap.del('n', '<leader>do')
+      vim.keymap.del({ 'n', 'v' }, '<Leader>dh')
+      vim.keymap.del({ 'n', 'v' }, '<Leader>de')
+    end
+  end
+end
 
 return {
   -- NOTE: Yes, you can install new plugins here!
@@ -51,21 +81,28 @@ return {
     }
 
     -- Basic debugging keymaps, feel free to change to your liking!
-    vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })
-    vim.keymap.set('n', '<F1>', dap.step_into, { desc = 'Debug: Step Into' })
-    vim.keymap.set('n', '<F2>', dap.step_over, { desc = 'Debug: Step Over' })
-    vim.keymap.set('n', '<F3>', dap.step_out, { desc = 'Debug: Step Out' })
-    vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
-    vim.keymap.set('n', '<leader>B', function()
-      dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
-    end, { desc = 'Debug: Set Breakpoint' })
+    -- vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })
+    -- vim.keymap.set('n', '<F1>', dap.step_into, { desc = 'Debug: Step Into' })
+    -- vim.keymap.set('n', '<F2>', dap.step_over, { desc = 'Debug: Step Over' })
+    -- vim.keymap.set('n', '<F3>', dap.step_out, { desc = 'Debug: Step Out' })
+    -- vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
+    -- vim.keymap.set('n', '<leader>B', function()
+    --   dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
+    -- end, { desc = 'Debug: Set Breakpoint' })
 
     -- xcode
-    vim.keymap.set('n', '<leader>ud', xcodebuild.build_and_debug, { desc = 'Build & Deb[u]g' })
-    vim.keymap.set('n', '<leader>ur', xcodebuild.debug_without_build, { desc = 'Deb[u]g Without Building' })
-    vim.keymap.set('n', '<leader>ut', xcodebuild.debug_tests, { desc = 'Deb[u]g Tests' })
-    vim.keymap.set('n', '<leader>uT', xcodebuild.debug_class_tests, { desc = 'Deb[u]g Class Tests' })
-    vim.keymap.set('n', '<leader>ux', xcodebuild.terminate_session, { desc = 'Terminate Deb[u]gger' })
+    --stylua: ignore start
+    vim.keymap.set("n", "<leader>dd", xcodebuild.build_and_debug, { desc = "Build & Debug" })
+    vim.keymap.set("n", "<leader>dr", xcodebuild.debug_without_build, { desc = "Debug Without Building" })
+    vim.keymap.set("n", "<leader>dt", xcodebuild.debug_tests, { desc = "Debug Tests" })
+    vim.keymap.set("n", "<leader>dT", xcodebuild.debug_class_tests, { desc = "Debug Class Tests" })
+    vim.keymap.set("n", "<leader>b", xcodebuild.toggle_breakpoint, { desc = "Toggle Breakpoint" })
+    vim.keymap.set("n", "<leader>B", xcodebuild.toggle_message_breakpoint, { desc = "Toggle Message Breakpoint" })
+    --stylua: ignore end
+    vim.keymap.set('n', '<leader>dx', function()
+      xcodebuild.terminate_session()
+      require('dap').listeners.after['event_terminated']['me']()
+    end, { desc = 'Terminate debugger' })
 
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
@@ -104,12 +141,12 @@ return {
             { id = 'watches', size = 0.25 },
           },
           position = 'left',
-          size = 60,
+          size = 40,
         },
         {
           elements = {
-            { id = 'repl', size = 0.35 },
-            { id = 'console', size = 0.65 },
+            { id = 'repl', size = 0.4 },
+            { id = 'console', size = 0.6 },
           },
           position = 'bottom',
           size = 10,

@@ -10,12 +10,12 @@ return {
   },
   config = function()
     require('xcodebuild').setup {
-      show_build_progress_bar = false,
+      show_build_progress_bar = true,
       logs = {
         auto_open_on_success_tests = false,
         auto_open_on_failed_tests = false,
         auto_open_on_success_build = false,
-        auto_open_on_failed_build = false,
+        auto_open_on_failed_build = true,
         auto_focus = false,
         auto_close_on_app_launch = true,
         only_summary = true,
