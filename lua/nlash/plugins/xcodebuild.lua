@@ -53,7 +53,7 @@ return {
       },
       commands = {
         -- this is to force rosetta simulators. delete when we don't need to anymore.
-        extra_build_args = '-parallelizeTargets ARCHS=x86_64',
+        -- extra_build_args = '-parallelizeTargets ARCHS=x86_64',
       },
     }
 
