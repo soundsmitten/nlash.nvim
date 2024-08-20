@@ -5,6 +5,17 @@
 -- Primarily focused on configuring the debugger for Go, but can
 -- be extended to other languages as well. That's why it's called
 -- kickstart.nvim and not kitchen-sink.nvim ;)
+--
+
+local function setupBuildArgs()
+  local config = require 'xcodebuild.core.config'
+  if string.match(vim.g.xcodebuild_platform, 'Simulator') then
+    config.options.commands.extra_build_args = '-parallelizeTargets ARCHS=x86_64'
+  else
+    config.options.commands.extra_build_args = ''
+  end
+end
+
 local function setupListeners()
   local dap = require 'dap'
   local areSet = false
@@ -83,6 +94,10 @@ return {
 
     -- xcode
     --stylua: ignore start
+    vim.keymap.set("n", "<leader>dl", function()
+        setupBuildArgs()
+        xcodebuild.build_and_debug()
+    end, { desc = "Test Sim pattern Build and Debug" })
     vim.keymap.set("n", "<leader>dd", xcodebuild.build_and_debug, { desc = "Build & Debug" })
     vim.keymap.set("n", "<leader>dr", xcodebuild.debug_without_build, { desc = "Debug Without Building" })
     vim.keymap.set("n", "<leader>dt", xcodebuild.debug_tests, { desc = "Debug Tests" })
