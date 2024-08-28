@@ -98,6 +98,12 @@ return {
         setupBuildArgs()
         xcodebuild.build_and_debug()
     end, { desc = "Test Sim pattern Build and Debug" })
+
+    vim.keymap.set("n", "<leader>dL", function()
+      setupBuildArgs()
+      xcodebuild.debug_class_tests()
+    end, { desc = "Test Sim pattern Debug Class Tests"})
+
     vim.keymap.set("n", "<leader>dd", xcodebuild.build_and_debug, { desc = "Build & Debug" })
     vim.keymap.set("n", "<leader>dr", xcodebuild.debug_without_build, { desc = "Debug Without Building" })
     vim.keymap.set("n", "<leader>dt", xcodebuild.debug_tests, { desc = "Debug Tests" })
