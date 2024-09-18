@@ -15,3 +15,13 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
+
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+  pattern = { '*.podspec', 'Podfile' },
+  command = 'set filetype=ruby',
+})
+
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+  pattern = { 'Podfile.lock' },
+  command = 'set filetype=yaml',
+})
