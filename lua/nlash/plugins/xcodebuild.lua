@@ -47,6 +47,11 @@ return {
             }
           end
         end,
+        integrations = {
+          pymobiledevice = {
+            enabled = true,
+          },
+        },
       },
       code_coverage = {
         enabled = true,
