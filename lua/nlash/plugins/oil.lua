@@ -8,7 +8,7 @@ return {
     oil.setup {
       -- Set the default keymap to <leader>o
       vim.keymap.set('n', '<leader>db', function()
-        oil.open_float(nil)
+        oil.open(nil)
       end),
 
       vim.keymap.set('n', '<leader>g.', function()
