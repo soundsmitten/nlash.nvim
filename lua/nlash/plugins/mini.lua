@@ -20,6 +20,12 @@ return {
     -- navigation with [ ]
     require('mini.bracketed').setup()
 
+    -- improved F, f, t, T commands.
+    require('mini.jump').setup()
+
+    -- split and join args
+    require('mini.splitjoin').setup()
+
     -- Simple and easy statusline.
     --  You could remove this setup call if you don't like it,
     --  and try some other statusline plugin
