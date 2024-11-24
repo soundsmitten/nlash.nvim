@@ -65,6 +65,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     -- Enable Telescope extensions if they are installed
     pcall(require('telescope').load_extension, 'fzf')
     pcall(require('telescope').load_extension, 'ui-select')
+    pcall(require('telescope').load_extension, 'workspaces')
 
     local open_with_trouble = require('trouble.sources.telescope').open
     local telescope = require 'telescope'
@@ -114,5 +115,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
     end, { desc = '[S]earch [N]eovim files' })
 
     vim.keymap.set('n', ';', '<cmd>Telescope cmdline<cr>', { desc = 'Telescope commandline' })
+    vim.keymap.set('n', '<leader>sW', '<cmd>Telescope workspaces<cr>', { desc = 'Telescope workspaces' })
   end,
 }
