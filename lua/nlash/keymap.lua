@@ -36,4 +36,4 @@ local function run_go_program()
   end
 end
 
-vim.keymap.set('n', '<leader>gr', run_go_program, { desc = 'Run Go program' })
+vim.keymap.set('n', '<leader>Gr', run_go_program, { desc = 'Run Go program' })
