@@ -1,5 +1,6 @@
 return {
   'natecraddock/workspaces.nvim',
+  dependencies = { 'natecraddock/sessions.nvim' },
   branch = 'master',
 
   config = function()
@@ -9,8 +10,10 @@ return {
       hooks = {
         -- open = { 'Telescope find_files' },
         open = function()
-          require('oil').open(workspaces.path())
-          require('telescope.builtin').find_files()
+          if require('sessions').load(nil, { autosave = true }) == false then
+            require('oil').open(workspaces.path())
+            require('sessions').save(nil, { autosave = true })
+          end
         end,
       },
     }

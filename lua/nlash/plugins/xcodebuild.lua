@@ -1,7 +1,7 @@
 return {
   'wojciech-kulik/xcodebuild.nvim',
   -- branch = 'main',
-  tag = 'v5.0.0',
+  tag = 'v5.1.0',
   dependencies = {
     'nvim-telescope/telescope.nvim',
     'MunifTanjim/nui.nvim',
