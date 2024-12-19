@@ -21,7 +21,11 @@ return {
     require('mini.bracketed').setup()
 
     -- improved F, f, t, T commands.
-    require('mini.jump').setup()
+    -- require('mini.jump').setup {
+    --   mappings = {
+    --     repeat_jmp = '',
+    --   },
+    -- }
 
     -- split and join args
     require('mini.splitjoin').setup()
