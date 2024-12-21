@@ -10,9 +10,11 @@
 local function setupBuildArgs()
   local config = require 'xcodebuild.core.config'
   if string.match(vim.g.xcodebuild_platform, 'Simulator') then
-    config.options.commands.extra_build_args = '-parallelizeTargets ARCHS=x86_64'
+    config.options.commands.extra_build_args = { '-parallelizeTargets', 'ARCHS=x86_64' }
+    config.options.commands.extra_test_args = { '-parallelizeTargets', 'ARCHS=x86_64' }
   else
-    config.options.commands.extra_build_args = ''
+    config.options.commands.extra_build_args = { '-parallelizeTargets' }
+    config.options.commands.extra_test_args = { '-parallelizeTargets' }
   end
 end
 
