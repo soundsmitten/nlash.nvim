@@ -20,13 +20,11 @@ local prompts = {
 return {
   {
     'CopilotC-Nvim/CopilotChat.nvim',
-    -- version = "v2.7.0",
-    branch = 'canary', -- Use the canary branch if you want to test the latest features but it might be unstable
-    -- Do not use branch and version together, either use branch or version
     dependencies = {
       { 'nvim-telescope/telescope.nvim' }, -- Use telescope for help actions
       { 'nvim-lua/plenary.nvim' },
     },
+    build = "make tiktoken",
     opts = {
       model = 'claude-3.5-sonnet',
       question_header = '## User ',
@@ -71,11 +69,11 @@ return {
           normal = 'gmd',
         },
         -- Show the prompt
-        show_system_prompt = {
+        show_info = {
           normal = 'gmp',
         },
         -- Show the user selection
-        show_user_selection = {
+        show_context = {
           normal = 'gms',
         },
       },
