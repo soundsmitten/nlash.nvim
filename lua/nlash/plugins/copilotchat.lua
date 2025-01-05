@@ -20,6 +20,7 @@ local prompts = {
 return {
   {
     'CopilotC-Nvim/CopilotChat.nvim',
+    tag = 'v3.3.3',
     dependencies = {
       { 'nvim-telescope/telescope.nvim' }, -- Use telescope for help actions
       { 'nvim-lua/plenary.nvim' },
