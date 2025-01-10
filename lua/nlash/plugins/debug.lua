@@ -7,7 +7,7 @@
 -- kickstart.nvim and not kitchen-sink.nvim ;)
 --
 
-local function setupBuildArgs()
+function SetupXcodebuildRosettaBuildArgs()
   local config = require 'xcodebuild.core.config'
   if string.match(vim.g.xcodebuild_platform, 'Simulator') then
     config.options.commands.extra_build_args = { '-parallelizeTargets', 'ARCHS=x86_64' }
@@ -99,14 +99,14 @@ return {
     -- xcode
     --stylua: ignore start
     vim.keymap.set("n", "<leader>dl", function()
-        setupBuildArgs()
+        SetupXcodebuildRosettaBuildArgs()
         xcodebuild.build_and_debug()
-    end, { desc = "Test Sim pattern Build and Debug" })
+    end, { desc = "Build and Debug (Rosetta)" })
 
     vim.keymap.set("n", "<leader>dL", function()
-      setupBuildArgs()
+      SetupXcodebuildRosettaBuildArgs()
       xcodebuild.debug_class_tests()
-    end, { desc = "Test Sim pattern Debug Class Tests"})
+    end, { desc = "Test Sim pattern Debug Class Tests (Rosetta)"})
 
     vim.keymap.set("n", "<leader>dd", xcodebuild.build_and_debug, { desc = "Build & Debug" })
     vim.keymap.set("n", "<leader>dr", xcodebuild.debug_without_build, { desc = "Debug Without Building" })
