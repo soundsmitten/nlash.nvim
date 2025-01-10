@@ -16,10 +16,36 @@ return { -- LSP Configuration & Plugins
 
     -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
     -- used for completion, annotations and signatures of Neovim apis
-    { 'folke/neodev.nvim', opts = {} },
+    {
+      'folke/lazydev.nvim',
+      ft = 'lua', -- only load on lua files
+      opts = {
+        library = {
+          -- See the configuration section for more details
+          -- Load luvit types when the `vim.uv` word is found
+          { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+        },
+      },
+    },
     'cmp-nvim-lsp',
     { 'antosha417/nvim-lsp-file-operations', config = true },
+
+    -- `roslyn` is the official C# LSP used in VSCode. 
+    -- It does not play very nicely with regular nvim-lspconfig and mason, so at this time you must use a standalone plugin.
+    -- Unfortunately, you must also download Roslyn manually. It's not very obvious how to do this, so here are the steps:
+    -- 1. Navigate to https://dev.azure.com/azure-public/vside/_artifacts/feed/vs-impl to see the latest package feed for Microsoft.CodeAnalysis.LanguageServer 
+    -- 2. Download the version matching your OS + Arch.
+    -- 3. Unzip the .nupkg file
+    -- 4. Copy the contents of <zip root>/content/LanguageServer/<yourArch/* to ~/.local/share/nvim/roslyn/
+    {
+      'seblj/roslyn.nvim',
+      ft = 'cs',
+      opts = {
+        -- your configuration comes here; leave empty for default settings
+      },
+    },
   },
+
   config = function()
     -- Brief aside: **What is LSP?**
     --
@@ -150,6 +176,7 @@ return { -- LSP Configuration & Plugins
     --  - settings (table): Override the default settings passed when initializing the server.
     --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
     local servers = {
+      omnisharp = { enabled = false },
       -- clangd = {},
       -- gopls = {},
       -- pyright = {},

@@ -1,6 +1,6 @@
 return {
   'stevearc/conform.nvim',
-  tag = "v7.1.0",
+  tag = 'v7.1.0',
   event = { 'BufReadPre', 'BufNewFile' },
   config = function()
     local conform = require 'conform'
@@ -10,10 +10,10 @@ return {
         lua = { 'stylua' },
         swift = { 'swiftformat' },
       },
-      format_on_save = false,
-      --      format_on_save = function()
-      --        return { timeout_ms = 500, lsp_fallback = true }
-      --      end,
+
+      -- format_on_save = function()
+      --   return { timeout_ms = 500, lsp_fallback = true }
+      -- end,
       log_level = vim.log.levels.ERROR,
 
       formatters = {
