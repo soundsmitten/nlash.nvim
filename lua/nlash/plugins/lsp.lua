@@ -30,10 +30,10 @@ return { -- LSP Configuration & Plugins
     'cmp-nvim-lsp',
     { 'antosha417/nvim-lsp-file-operations', config = true },
 
-    -- `roslyn` is the official C# LSP used in VSCode. 
+    -- `roslyn` is the official C# LSP used in VSCode.
     -- It does not play very nicely with regular nvim-lspconfig and mason, so at this time you must use a standalone plugin.
     -- Unfortunately, you must also download Roslyn manually. It's not very obvious how to do this, so here are the steps:
-    -- 1. Navigate to https://dev.azure.com/azure-public/vside/_artifacts/feed/vs-impl to see the latest package feed for Microsoft.CodeAnalysis.LanguageServer 
+    -- 1. Navigate to https://dev.azure.com/azure-public/vside/_artifacts/feed/vs-impl to see the latest package feed for Microsoft.CodeAnalysis.LanguageServer
     -- 2. Download the version matching your OS + Arch.
     -- 3. Unzip the .nupkg file
     -- 4. Copy the contents of <zip root>/content/LanguageServer/<yourArch/* to ~/.local/share/nvim/roslyn/
@@ -246,6 +246,9 @@ return { -- LSP Configuration & Plugins
         },
       },
     }
+
+    -- F# LSP - for later maybe?
+    -- lspconfig.fsautocomplete.setup {}
 
     -- nice icons
     local signs = { Error = ' ', Warn = ' ', Hint = '󰠠 ', Info = ' ' }
