@@ -9,6 +9,7 @@ return {
       formatters_by_ft = {
         lua = { 'stylua' },
         swift = { 'swiftformat' },
+        cs = { 'csharpier' },
       },
 
       -- format_on_save = function()
@@ -28,6 +29,14 @@ return {
         golines = {
           command = 'golines',
           args = { '-w', '$FILENAME' },
+          condition = function(ctx)
+            return vim.fs.basename(ctx.filename) ~= 'README.md'
+          end,
+        },
+        csharpier = {
+          command = 'dotnet',
+          args = { 'csharpier', '--fast', '--write-stdout', '$FILENAME' },
+          stdin = true,
           condition = function(ctx)
             return vim.fs.basename(ctx.filename) ~= 'README.md'
           end,
