@@ -7,9 +7,9 @@ return { -- Fuzzy Finder (files, lsp, etc)
     'nvim-lua/plenary.nvim',
     'jonarrien/telescope-cmdline.nvim',
     {
-      'soundsmitten/nvim-telescope--telescope-media-files.nvim',
-      name = 'telescope-media-files.nvim',
-      branch = 'kitty-workaround',
+      'soundsmitten/telescope-media-files.nvim',
+      branch = 'misc-fixes',
+      -- dir = os.getenv 'HOME' .. '/Repos/telescope-media-files.nvim',
     },
     { -- If encountering errors, see telescope-fzf-native README for installation instructions
       'nvim-telescope/telescope-fzf-native.nvim',
