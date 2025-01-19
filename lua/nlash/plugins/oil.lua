@@ -13,7 +13,7 @@ end
 return {
   'stevearc/oil.nvim',
   opts = {},
-  tag = 'v2.8.0',
+  tag = 'v2.14.0',
 
   config = function()
     local detail = false

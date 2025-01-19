@@ -20,17 +20,6 @@ return {
           end
           return 'make install_jsregexp'
         end)(),
-        dependencies = {
-          -- `friendly-snippets` contains a variety of premade snippets.
-          --    See the README about individual language/framework/plugin snippets:
-          --    https://github.com/rafamadriz/friendly-snippets
-          -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
-          -- },
-        },
       },
       'saadparwaiz1/cmp_luasnip',
 
@@ -41,7 +30,10 @@ return {
       'cmp-path',
       'cmp-buffer',
 
+      -- `friendly-snippets` contains a variety of premade snippets.
+      --    See the README about individual language/framework/plugin snippets:
       'rafamadriz/friendly-snippets',
+
       'onsails/lspkind.nvim', -- vs-code like pictograms
     },
     config = function()
@@ -106,10 +98,10 @@ return {
           --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
         },
         sources = {
-          { name = 'lazydev'},
           { name = 'nvim_lsp' },
-          { name = 'luasnip' },
           { name = 'buffer' },
+          { name = 'lazydev' },
+          { name = 'luasnip' },
           { name = 'path' },
           { name = 'copilot' },
         },

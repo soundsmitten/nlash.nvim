@@ -18,6 +18,31 @@ function SetupXcodebuildRosettaBuildArgs()
   end
 end
 
+function SetupXcodebuildDebugKeymaps()
+  local xcodebuild = require 'xcodebuild.integrations.dap'
+  --
+  vim.keymap.set('n', '<leader>dl', function()
+    SetupXcodebuildRosettaBuildArgs()
+    xcodebuild.build_and_debug()
+  end, { desc = 'Build and Debug (Rosetta)' })
+
+  vim.keymap.set('n', '<leader>dL', function()
+    SetupXcodebuildRosettaBuildArgs()
+    xcodebuild.debug_class_tests()
+  end, { desc = 'Test Sim pattern Debug Class Tests (Rosetta)' })
+
+  vim.keymap.set('n', '<leader>dd', xcodebuild.build_and_debug, { desc = 'Build & Debug' })
+  vim.keymap.set('n', '<leader>dr', xcodebuild.debug_without_build, { desc = 'Debug Without Building' })
+  vim.keymap.set('n', '<leader>dt', xcodebuild.debug_tests, { desc = 'Debug Tests' })
+  vim.keymap.set('n', '<leader>dT', xcodebuild.debug_class_tests, { desc = 'Debug Class Tests' })
+  vim.keymap.set('n', '<leader>b', xcodebuild.toggle_breakpoint, { desc = 'Toggle Breakpoint' })
+  vim.keymap.set('n', '<leader>B', xcodebuild.toggle_message_breakpoint, { desc = 'Toggle Message Breakpoint' })
+  vim.keymap.set('n', '<leader>dx', function()
+    xcodebuild.terminate_session()
+    require('dap').listeners.after['event_terminated']['me']()
+  end, { desc = 'Terminate debugger' })
+end
+
 local function setupListeners()
   local dap = require 'dap'
   local areSet = false
@@ -95,30 +120,6 @@ return {
         -- Update this to ensure that you have the debuggers for the langs you want
       },
     }
-
-    -- xcode
-    --stylua: ignore start
-    vim.keymap.set("n", "<leader>dl", function()
-        SetupXcodebuildRosettaBuildArgs()
-        xcodebuild.build_and_debug()
-    end, { desc = "Build and Debug (Rosetta)" })
-
-    vim.keymap.set("n", "<leader>dL", function()
-      SetupXcodebuildRosettaBuildArgs()
-      xcodebuild.debug_class_tests()
-    end, { desc = "Test Sim pattern Debug Class Tests (Rosetta)"})
-
-    vim.keymap.set("n", "<leader>dd", xcodebuild.build_and_debug, { desc = "Build & Debug" })
-    vim.keymap.set("n", "<leader>dr", xcodebuild.debug_without_build, { desc = "Debug Without Building" })
-    vim.keymap.set("n", "<leader>dt", xcodebuild.debug_tests, { desc = "Debug Tests" })
-    vim.keymap.set("n", "<leader>dT", xcodebuild.debug_class_tests, { desc = "Debug Class Tests" })
-    vim.keymap.set("n", "<leader>b", xcodebuild.toggle_breakpoint, { desc = "Toggle Breakpoint" })
-    vim.keymap.set("n", "<leader>B", xcodebuild.toggle_message_breakpoint, { desc = "Toggle Message Breakpoint" })
-    --stylua: ignore end
-    vim.keymap.set('n', '<leader>dx', function()
-      xcodebuild.terminate_session()
-      require('dap').listeners.after['event_terminated']['me']()
-    end, { desc = 'Terminate debugger' })
 
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
