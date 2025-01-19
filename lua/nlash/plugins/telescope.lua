@@ -100,6 +100,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
     vim.keymap.set('n', '<leader>sm', extensions.media_files.media_files, { desc = '[S]earch [M]edia Files' })
 
+    -- Slightly advanced example of overriding default behavior and theme
     vim.keymap.set('n', '<leader>/', function()
       -- You can pass additional configuration to Telescope to change the theme, layout, etc.
       builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown())
@@ -119,7 +120,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
       builtin.find_files { cwd = vim.fn.stdpath 'config' }
     end, { desc = '[S]earch [N]eovim files' })
 
-    vim.keymap.set('n', ':', '<cmd>Telescope cmdline<cr>', { noremap = true, desc = 'Telescope commandline' })
+    -- vim.keymap.set('n', ':', '<cmd>Telescope cmdline<cr>', { noremap = true, desc = 'Telescope commandline' })
     vim.keymap.set('n', '<leader>sW', '<cmd>Telescope workspaces<cr>', { desc = 'Telescope workspaces' })
   end,
 }
