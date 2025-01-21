@@ -1,7 +1,7 @@
 return {
   'stevearc/conform.nvim',
   tag = 'v8.3.0',
-  event = { 'BufReadPre', 'BufNewFile' },
+  event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
   config = function()
     local conform = require 'conform'
 
