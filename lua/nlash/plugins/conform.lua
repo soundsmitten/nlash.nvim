@@ -35,7 +35,7 @@ return {
         },
         csharpier = {
           command = 'dotnet',
-          args = { 'csharpier', '--fast', '--write-stdout', '$FILENAME' },
+          args = { 'csharpier', '--fast', '--no-cache', '--write-stdout', '$FILENAME' },
           stdin = true,
           condition = function(ctx)
             return vim.fs.basename(ctx.filename) ~= 'README.md'

@@ -92,6 +92,7 @@ return {
     -- Add your own debuggers here
     'wojciech-kulik/xcodebuild.nvim',
   },
+  lazy = true,
   config = function()
     local xcodebuild = require 'xcodebuild.integrations.dap'
 
