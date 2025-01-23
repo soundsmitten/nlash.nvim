@@ -25,6 +25,17 @@ function SetupXcodebuildKeymaps()
     vim.keymap.set("n", "<leader>xa", "<cmd>XcodebuildCodeActions<cr>", { desc = "Show Code Actions" })
 end
 
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'XcodebuildProjectSettingsUpdated',
+  callback = function(event)
+    if not was_setup then
+      SetupXcodebuildKeymaps()
+      SetupXcodebuildDebugKeymaps()
+      was_setup = true
+    end
+  end,
+})
+
 return {
   'wojciech-kulik/xcodebuild.nvim',
   -- dir = os.getenv 'HOME' .. '/Repos/xcodebuild.nvim',
@@ -91,23 +102,12 @@ return {
       },
     }
     local was_setup = false
-    if require("xcodebuild.project.config").is_configured() then
+    if require('xcodebuild.project.config').is_configured() then
       was_setup = true
       SetupXcodebuildKeymaps()
       SetupXcodebuildDebugKeymaps()
     else
-      vim.keymap.set("n", "<leader>xS", "<cmd>XcodebuildSetup<cr>", { desc = "Set up Xcode project" })
+      vim.keymap.set('n', '<leader>xS', '<cmd>XcodebuildSetup<cr>', { desc = 'Set up Xcode project' })
     end
-
-    vim.api.nvim_create_autocmd("User", {
-      pattern = "XcodebuildProjectSettingsUpdated",
-       callback = function(event)
-        if not was_setup then
-          SetupXcodebuildKeymaps()
-          SetupXcodebuildDebugKeymaps()
-          was_setup = true
-        end
-    end,
-  })
   end,
 }

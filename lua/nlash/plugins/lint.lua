@@ -2,7 +2,7 @@ return {
 
   { -- Linting
     'mfussenegger/nvim-lint',
-    event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
+    event = {  'BufWritePost', 'BufNewFile' },
     config = function()
       local lint = require 'lint'
       lint.linters_by_ft = {

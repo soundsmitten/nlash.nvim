@@ -1,6 +1,7 @@
 return { -- Highlight, edit, and navigate code
   'nvim-treesitter/nvim-treesitter',
   build = ':TSUpdate',
+  event = { 'BufReadPost', 'BufWritePost', 'BufNewFile', 'VeryLazy' },
   opts = {
     ensure_installed = { 'asm', 'bash', 'c', 'go', 'swift', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc', 'diff' },
     -- Autoinstall languages that are not installed
