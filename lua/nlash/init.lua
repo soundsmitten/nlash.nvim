@@ -2,6 +2,7 @@ require 'nlash.opt'
 require 'nlash.keymap'
 require 'nlash.lazy_init'
 require 'nlash.health'
+require 'nlash.util'
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
