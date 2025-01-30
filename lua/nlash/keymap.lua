@@ -41,4 +41,4 @@ vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 
 -- other
-util.uniqueKeyap('n', '<leader>mm', '<cmd>messages<cr>', { desc = 'Show messages' })
+util.uniqueKeymap('n', '<leader>mm', '<cmd>messages<cr>', { desc = 'Show messages' })
