@@ -72,6 +72,12 @@ return {
               assert(jid > 0, 'Failed to start job')
             end,
           },
+          ['<C-h>'] = false, -- { 'actions.select', opts = { horizontal = true } },
+          ['<C-t>'] = false, -- { 'actions.select', opts = { tab = true } },
+          ['<C-p>'] = 'actions.preview',
+          ['<C-c>'] = false, -- { 'actions.close', mode = 'n' },
+          ['<C-l>'] = false, -- 'actions.refresh',
+          ['gl'] = 'actions.refresh',
         },
       }
     end,

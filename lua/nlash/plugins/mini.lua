@@ -32,7 +32,9 @@ return {
     require('mini.surround').setup()
 
     -- navigation with [ ]
-    require('mini.bracketed').setup()
+    require('mini.bracketed').setup {
+      window = { suffix = '' },
+    }
 
     -- improved F, f, t, T commands.
     -- require('mini.jump').setup {
