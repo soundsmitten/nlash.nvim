@@ -231,6 +231,8 @@ return { -- LSP Configuration & Plugins
       on_attach = on_attach,
     }
 
+    require'lspconfig'.taplo.setup{}
+
     lspconfig.gopls.setup {
       on_attach = on_attach,
       capabilities = capabilities,
