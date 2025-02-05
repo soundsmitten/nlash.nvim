@@ -22,12 +22,12 @@ return {
         end)(),
       },
       'saadparwaiz1/cmp_luasnip',
+      'https://codeberg.org/FelipeLema/cmp-async-path',
 
       -- Adds other completion capabilities.
       --  nvim-cmp does not ship with all sources by default. They are split
       --  into multiple repos for maintenance purposes.
       'cmp-nvim-lsp',
-      'cmp-path',
       'cmp-buffer',
 
       -- `friendly-snippets` contains a variety of premade snippets.
@@ -102,8 +102,8 @@ return {
           { name = 'buffer' },
           { name = 'lazydev' },
           { name = 'luasnip' },
-          { name = 'path' },
-          { name = 'copilot' },
+          { name = 'async_path' },
+          -- { name = 'copilot' },
         },
 
         -- configure lspkind for vs-code like pictograms
