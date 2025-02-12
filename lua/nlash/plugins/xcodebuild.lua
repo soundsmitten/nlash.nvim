@@ -1,3 +1,5 @@
+local was_setup = false
+
 function SetupXcodebuildKeymaps()
    -- stylua: ignore start
     vim.keymap.set("n", "<leader>X", "<cmd>XcodebuildPicker<cr>", { desc = "Show Xcodebuild Actions" })
@@ -101,7 +103,6 @@ return {
         -- extra_build_args = '-parallelizeTargets ARCHS=x86_64',
       },
     }
-    local was_setup = false
     if require('xcodebuild.project.config').is_configured() then
       was_setup = true
       SetupXcodebuildKeymaps()
