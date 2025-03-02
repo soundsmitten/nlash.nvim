@@ -42,7 +42,7 @@ return {
   'wojciech-kulik/xcodebuild.nvim',
   -- dir = os.getenv 'HOME' .. '/Repos/xcodebuild.nvim',
   -- branch = 'main',
-  tag = 'v5.3.0',
+  tag = 'v6.1.0',
   dependencies = {
     'nvim-telescope/telescope.nvim',
     'MunifTanjim/nui.nvim',

@@ -1,3 +1,5 @@
+local util = require 'nlash.util'
+
 local function shell(cmd)
   local result
   local jobid = vim.fn.jobstart(cmd, {
@@ -25,7 +27,7 @@ return {
           signcolumn = 'yes:2',
         },
 
-        vim.keymap.set('n', '<leader>db', function()
+        util.uniqueKeymap('n', '<leader>db', function()
           oil.open(nil)
         end),
 
