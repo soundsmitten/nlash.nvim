@@ -49,7 +49,7 @@ return {
             luasnip.lsp_expand(args.body)
           end,
         },
-        completion = { completeopt = 'menu,menuone,preview' },
+        completion = { completeopt = 'menu,menuone,preview,popup' },
 
         -- For an understanding of why these mappings were
         -- chosen, you will need to read `:help ins-completion`
