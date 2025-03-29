@@ -24,11 +24,16 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local dev_config = nil
+if vim.loop.os_uname().sysname == 'Darwin' then
+  dev_config = {
+    path = os.getenv 'HOME' .. '/Repos'
+  }
+end
+
 require('lazy').setup {
   spec = 'nlash.plugins',
-  dev = {
-    path = os.getenv 'HOME' .. 'Repos',
-  },
+  dev = dev_config,
 
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the

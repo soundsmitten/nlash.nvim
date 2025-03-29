@@ -74,11 +74,8 @@ local function setupListeners()
   end
 end
 
-return {
-  -- NOTE: Yes, you can install new plugins here!
-  'mfussenegger/nvim-dap',
-  -- NOTE: And you can specify dependencies as well
-  dependencies = {
+local function getDependencies()
+  local deps = {
     -- Creates a beautiful debugger UI
     'rcarriga/nvim-dap-ui',
 
@@ -87,20 +84,31 @@ return {
 
     -- Installs the debug adapters for you
     'williamboman/mason.nvim',
-    -- 'jay-babu/mason-nvim-dap.nvim',
+  }
 
-    -- Add your own debuggers here
-    'wojciech-kulik/xcodebuild.nvim',
-  },
+  if vim.loop.os_uname().sysname == 'Darwin' then
+    table.insert(deps, 'wojciech-kulik/xcodebuild.nvim')
+  end
+
+  return deps
+end
+
+return {
+  -- NOTE: Yes, you can install new plugins here!
+  'mfussenegger/nvim-dap',
+  -- NOTE: And you can specify dependencies as well
+  dependencies = getDependencies(),
   lazy = true,
   config = function()
-    local xcodebuild = require 'xcodebuild.integrations.dap'
+    if vim.loop.os_uname().sysname == 'Darwin' then
+      local xcodebuild = require 'xcodebuild.integrations.dap'
 
-    -- TODO: change it to your local codelldb path
-    local codelldbPath = os.getenv 'HOME' .. '/.local/bin/codelldb-darwin-arm64/extension/adapter/codelldb'
+      -- TODO: change it to your local codelldb path
+      local codelldbPath = os.getenv 'HOME' .. '/.local/bin/codelldb-darwin-arm64/extension/adapter/codelldb'
 
-    xcodebuild.setup(codelldbPath)
-    setupListeners()
+      xcodebuild.setup(codelldbPath)
+      setupListeners()
+    end
     local dap = require 'dap'
     local dapui = require 'dapui'
     --
