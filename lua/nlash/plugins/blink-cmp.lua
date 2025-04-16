@@ -53,7 +53,7 @@ return { -- Autocompletion
       -- See :h blink-cmp-config-keymap for defining your own keymap
       preset = 'default',
 
-      ['<C-y>'] = { 'select_and_accept' },
+      ['<C-g>'] = { 'select_and_accept' },
 
       -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
       --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
