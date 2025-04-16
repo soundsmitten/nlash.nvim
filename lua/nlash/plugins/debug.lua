@@ -9,7 +9,8 @@
 
 function SetupXcodebuildRosettaBuildArgs()
   local config = require 'xcodebuild.core.config'
-  if string.match(vim.g.xcodebuild_platform, 'Simulator') then
+  -- set an env variable on work machine to always use rosetta simulators
+  if os.getenv 'NLCOMP' == 'work' and string.match(vim.g.xcodebuild_platform, 'Simulator') then
     config.options.commands.extra_build_args = { '-parallelizeTargets', 'ARCHS=x86_64' }
     config.options.commands.extra_test_args = { '-parallelizeTargets', 'ARCHS=x86_64' }
   else
@@ -31,12 +32,26 @@ function SetupXcodebuildDebugKeymaps()
     xcodebuild.debug_class_tests()
   end, { desc = 'Test Sim pattern Debug Class Tests (Rosetta)' })
 
-  vim.keymap.set('n', '<leader>dd', xcodebuild.build_and_debug, { desc = 'Build & Debug' })
-  vim.keymap.set('n', '<leader>dr', xcodebuild.debug_without_build, { desc = 'Debug Without Building' })
-  vim.keymap.set('n', '<leader>dt', xcodebuild.debug_tests, { desc = 'Debug Tests' })
-  vim.keymap.set('n', '<leader>dT', xcodebuild.debug_class_tests, { desc = 'Debug Class Tests' })
+  vim.keymap.set('n', '<leader>dd', function()
+    SetupXcodebuildRosettaBuildArgs()
+    xcodebuild.build_and_debug()
+  end, { desc = 'Build & Debug' })
+  vim.keymap.set('n', '<leader>dr', function()
+    SetupXcodebuildRosettaBuildArgs()
+    xcodebuild.debug_without_build()
+  end, { desc = 'Debug Without Building' })
+  vim.keymap.set('n', '<leader>dt', function()
+    SetupXcodebuildRosettaBuildArgs()
+    xcodebuild.debug_tests()
+  end, { desc = 'Debug Tests' })
+  vim.keymap.set('n', '<leader>dT', function()
+    SetupXcodebuildRosettaBuildArgs()
+    xcodebuild.debug_class_tests()
+  end, { desc = 'Debug Class Tests' })
+
   vim.keymap.set('n', '<leader>b', xcodebuild.toggle_breakpoint, { desc = 'Toggle Breakpoint' })
   vim.keymap.set('n', '<leader>B', xcodebuild.toggle_message_breakpoint, { desc = 'Toggle Message Breakpoint' })
+
   vim.keymap.set('n', '<leader>dx', function()
     xcodebuild.terminate_session()
     require('dap').listeners.after['event_terminated']['me']()
