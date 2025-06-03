@@ -116,7 +116,7 @@ return { -- LSP Configuration & Plugins
 
         -- Rename the variable under your cursor.
         --  Most Language Servers support renaming across files, etc.
-        map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+        map('<leader>n', vim.lsp.buf.rename, 'Re[n]ame')
 
         -- Execute a code action, usually your cursor needs to be on top of an error
         -- or a suggestion from your LSP for this to activate.
@@ -177,6 +177,8 @@ return { -- LSP Configuration & Plugins
     --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
     --  - settings (table): Override the default settings passed when initializing the server.
     --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+    vim.lsp.enable('intelephense')
+
     local servers = {
       omnisharp = { enabled = false },
       -- clangd = {},
