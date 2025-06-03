@@ -72,7 +72,7 @@ return { -- Autocompletion
     },
 
     sources = {
-      default = { 'lsp', 'buffer', 'path', 'snippets', 'lazydev' },
+      default = { 'lsp', 'buffer', 'path', 'snippets', 'lazydev', 'copilot' },
       providers = {
         copilot = {
           name = 'copilot',
