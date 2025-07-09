@@ -38,13 +38,13 @@ return { -- LSP Configuration & Plugins
     -- 2. Download the version matching your OS + Arch.
     -- 3. Unzip the .nupkg file
     -- 4. Copy the contents of <zip root>/content/LanguageServer/<yourArch/* to ~/.local/share/nvim/roslyn/
-    {
-      'seblj/roslyn.nvim',
-      ft = 'cs',
-      opts = {
-        -- your configuration comes here; leave empty for default settings
-      },
-    },
+    -- {
+    --   'seblj/roslyn.nvim',
+    --   ft = 'cs',
+    --   opts = {
+    --     -- your configuration comes here; leave empty for default settings
+    --   },
+    -- },
   },
 
   config = function()
