@@ -3,7 +3,12 @@ return {
   priority = 1000,
   lazy = false,
   opts = {
-    picker = {},
+    picker = {
+      main = {
+        file = false,
+        current = true,
+      },
+    },
     dashboard = {
       enabled = true,
       sections = {
