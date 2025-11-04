@@ -119,9 +119,9 @@ return {
       local xcodebuild = require 'xcodebuild.integrations.dap'
 
       -- TODO: change it to your local codelldb path
-      local codelldbPath = os.getenv 'HOME' .. '/.local/bin/codelldb-darwin-arm64/extension/adapter/codelldb'
+      -- local codelldbPath = os.getenv 'HOME' .. '/.local/bin/codelldb-darwin-arm64/extension/adapter/codelldb'
 
-      xcodebuild.setup(codelldbPath)
+      xcodebuild.setup()
       setupListeners()
     end
     local dap = require 'dap'

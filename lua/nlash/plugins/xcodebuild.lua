@@ -42,7 +42,7 @@ return {
   'wojciech-kulik/xcodebuild.nvim',
   -- dir = os.getenv 'HOME' .. '/Repos/xcodebuild.nvim',
   -- branch = 'main',
-  tag = 'v6.4.0',
+  tag = 'v7.0.0',
   dependencies = {
     "folke/snacks.nvim",
     'MunifTanjim/nui.nvim',

@@ -177,12 +177,10 @@ return { -- LSP Configuration & Plugins
     --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
     --  - settings (table): Override the default settings passed when initializing the server.
     --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-    vim.lsp.enable('intelephense')
 
     local servers = {
       omnisharp = { enabled = false },
       -- clangd = {},
-      -- gopls = {},
       -- pyright = {},
       -- rust_analyzer = {},
       -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -193,6 +191,8 @@ return { -- LSP Configuration & Plugins
       -- But for many setups, the LSP (`tsserver`) will work just fine
       -- tsserver = {},
       --
+
+      intelephense = {},
 
       lua_ls = {
         -- cmd = {...},
@@ -208,22 +208,30 @@ return { -- LSP Configuration & Plugins
           },
         },
       },
+
+      gopls = {
+        cmd = { 'gopls' },
+        filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+        root_dir = function(fname)
+          return vim.fs.root(fname, { 'go.work', 'go.mod', '.git' })
+        end,
+        settings = {
+          gopls = {
+            completeUnimported = true,
+            usePlaceholders = true,
+            analyses = {
+              unusedparams = true,
+            },
+          },
+        },
+      },
+
+      taplo = {},
     }
 
-    -- refactor
-    local lspconfig = require 'lspconfig'
-    local opts = { noremap = true, silent = true }
-    local on_attach = function(_, bufnr)
-      opts.buffer = bufnr
-
-      opts.desc = 'Show line diagnostics'
-      vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, opts)
-
-      opts.desc = 'Show documentation for what is under cursor'
-      vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-    end
-
-    lspconfig['sourcekit'].setup {
+    -- Configure sourcekit separately (not managed by Mason, comes with Xcode)
+    -- Using lspconfig for now as it's more reliable than the new vim.lsp.config API
+    require('lspconfig').sourcekit.setup {
       capabilities = vim.tbl_deep_extend('force', capabilities, {
         workspace = {
           didChangeWatchedFiles = {
@@ -231,30 +239,36 @@ return { -- LSP Configuration & Plugins
           },
         },
       }),
-      on_attach = on_attach,
+      cmd = { 'sourcekit-lsp' },
+      filetypes = { 'swift', 'objective-c', 'objective-cpp' },
+      root_dir = function(fname)
+        return vim.fs.root(fname, {
+          'Package.swift',
+          'compile_commands.json',
+          '.xcodeproj',
+          '.xcworkspace',
+          '.git',
+        })
+      end,
     }
 
-    require('lspconfig').taplo.setup {}
+    -- Additional keymaps (these were in the old on_attach)
+    vim.api.nvim_create_autocmd('LspAttach', {
+      group = vim.api.nvim_create_augroup('nlash-lsp-attach-additional', { clear = true }),
+      callback = function(event)
+        local opts = { noremap = true, silent = true, buffer = event.buf }
 
-    lspconfig.gopls.setup {
-      on_attach = on_attach,
-      capabilities = capabilities,
-      cmd = { 'gopls' },
-      filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
-      root_dir = lspconfig.util.root_pattern('go.work', 'go.mod', '.git'),
-      settings = {
-        gopls = {
-          completeUnimported = true,
-          usePlaceholders = true,
-          analyses = {
-            unusedparams = true,
-          },
-        },
-      },
-    }
+        opts.desc = 'Show line diagnostics'
+        vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, opts)
+
+        opts.desc = 'Show documentation for what is under cursor'
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+      end,
+    })
 
     -- F# LSP - for later maybe?
-    -- lspconfig.fsautocomplete.setup {}
+    -- vim.lsp.config.fsautocomplete({})
+    -- vim.lsp.enable('fsautocomplete')
 
     -- nice icons
     local signs = { Error = ' ', Warn = ' ', Hint = '󰠠 ', Info = ' ' }
@@ -283,11 +297,18 @@ return { -- LSP Configuration & Plugins
       handlers = {
         function(server_name)
           local server = servers[server_name] or {}
-          -- This handles overriding only values explicitly passed
-          -- by the server configuration above. Useful when disabling
-          -- certain features of an LSP (for example, turning off formatting for tsserver)
+          if server.enabled == false then
+            return
+          end
+
+          -- Merge capabilities
           server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-          require('lspconfig')[server_name].setup(server)
+
+          -- Configure the server with the new API
+          vim.lsp.config(server_name, server)
+
+          -- Enable the server
+          vim.lsp.enable(server_name)
         end,
       },
     }
