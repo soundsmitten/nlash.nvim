@@ -10,6 +10,9 @@ return {
     harpoon.setup {}
     -- REQUIRED
 
+    -- don't activate when pressing enter in normal mode
+    vim.keymap.set('n', '<cr>', '<cr>', { silent = true })
+
     vim.keymap.set('n', '<leader>ha', function()
       harpoon:list():add()
     end, { desc = 'Add current file to Harpoon' })
