@@ -1,5 +1,5 @@
 local util = require 'nlash.util'
-util.uniqueKeymap('n', '<leader>aD', '<cmd>Copilot disable<CR>')
+-- util.uniqueKeymap('n', '<leader>aD', '<cmd>Copilot disable<CR>')
 return {
   {
     'zbirenbaum/copilot.lua',
