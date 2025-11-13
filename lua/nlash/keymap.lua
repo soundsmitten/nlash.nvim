@@ -45,3 +45,9 @@ util.uniqueKeymap('n', '<leader>mm', '<cmd>messages<cr>', { desc = 'Show message
 
 -- terminal exit
 util.uniqueKeymap('t', '<C-x>', '<C-\\><C-n>', { desc = 'Exit terminal' })
+
+-- Disable Neovim's built-in commenting (0.10+)
+vim.keymap.del('n', 'gcc')
+vim.keymap.del('n', 'gc')
+vim.keymap.del('x', 'gc')
+vim.keymap.del('o', 'gc')
