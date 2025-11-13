@@ -212,9 +212,7 @@ return { -- LSP Configuration & Plugins
       gopls = {
         cmd = { 'gopls' },
         filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
-        root_dir = function(fname)
-          return vim.fs.root(fname, { 'go.work', 'go.mod', '.git' })
-        end,
+        root_markers = { 'go.work', 'go.mod', '.git' },
         settings = {
           gopls = {
             completeUnimported = true,
@@ -230,8 +228,7 @@ return { -- LSP Configuration & Plugins
     }
 
     -- Configure sourcekit separately (not managed by Mason, comes with Xcode)
-    -- Using lspconfig for now as it's more reliable than the new vim.lsp.config API
-    require('lspconfig').sourcekit.setup {
+    vim.lsp.config.sourcekit = {
       capabilities = vim.tbl_deep_extend('force', capabilities, {
         workspace = {
           didChangeWatchedFiles = {
@@ -241,16 +238,16 @@ return { -- LSP Configuration & Plugins
       }),
       cmd = { 'sourcekit-lsp' },
       filetypes = { 'swift', 'objective-c', 'objective-cpp' },
-      root_dir = function(fname)
-        return vim.fs.root(fname, {
-          'Package.swift',
-          'compile_commands.json',
-          '.xcodeproj',
-          '.xcworkspace',
-          '.git',
-        })
-      end,
+      root_markers = {
+        'Package.swift',
+        'compile_commands.json',
+        '.xcodeproj',
+        '.xcworkspace',
+        '.git',
+      },
     }
+
+    vim.lsp.enable('sourcekit')
 
     -- Additional keymaps (these were in the old on_attach)
     vim.api.nvim_create_autocmd('LspAttach', {
