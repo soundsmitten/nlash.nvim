@@ -12,8 +12,6 @@ return { -- Useful plugin to show you pending keybinds.
       { '<leader>d_', hidden = true },
       { '<leader>h', group = 'Git [H]unk' },
       { '<leader>h_', hidden = true },
-      { '<leader>r', group = '[R]ename' },
-      { '<leader>r_', hidden = true },
       { '<leader>s', group = '[S]earch' },
       { '<leader>s_', hidden = true },
       { '<leader>t', group = '[T]oggle' },
