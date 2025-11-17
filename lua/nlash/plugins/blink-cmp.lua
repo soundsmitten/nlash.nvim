@@ -54,6 +54,10 @@ return { -- Autocompletion
       preset = 'default',
 
       ['<C-g>'] = { 'select_and_accept' },
+      
+      -- Disable Tab/S-Tab to allow normal Tab behavior and avoid conflicts
+      ['<Tab>'] = {},
+      ['<S-Tab>'] = {},
 
       -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
       --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
