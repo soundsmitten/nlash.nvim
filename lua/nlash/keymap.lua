@@ -51,3 +51,8 @@ vim.keymap.del('n', 'gcc')
 vim.keymap.del('n', 'gc')
 vim.keymap.del('x', 'gc')
 vim.keymap.del('o', 'gc')
+
+-- Folding keymaps
+util.uniqueKeymap('n', '<leader>f1', function() vim.opt.foldlevel = 0 end, { desc = 'Fold: Level 1' })
+util.uniqueKeymap('n', '<leader>f2', function() vim.opt.foldlevel = 1 end, { desc = 'Fold: Level 2' })
+util.uniqueKeymap('n', '<leader>f3', function() vim.opt.foldlevel = 2 end, { desc = 'Fold: Level 3' })
