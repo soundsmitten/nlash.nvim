@@ -77,3 +77,9 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 -- vim.opt.cindent = true
 vim.opt.swapfile = false
+
+-- Enable treesitter-based folding
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.opt.foldlevel = 99 -- Start with all folds open
+vim.opt.foldlevelstart = 99 -- Start with all folds open when opening a file
