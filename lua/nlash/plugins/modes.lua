@@ -1,6 +1,6 @@
 return {
   'mvllow/modes.nvim',
-  tag = 'v0.2.0',
+  tag = 'v0.3.0',
   config = function()
     require('modes').setup {
       colors = {
@@ -11,7 +11,7 @@ return {
       },
 
       -- Set opacity for cursorline and number background
-      line_opacity = 0.15,
+      line_opacity = 0.25,
 
       -- Enable cursor highlights
       set_cursor = true,
