@@ -1,4 +1,4 @@
-vim.api.nvim_set_hl(0, 'NLBlinkIndentOrange', { default = true, fg = '#ee9360', ctermfg = 'Brown' })
+vim.api.nvim_set_hl(0, 'NLBlinkIndentGray', { default = true, fg = '#bcbfc4', ctermfg = 250 })
 
 return {
   'saghen/blink.indent',
@@ -6,7 +6,7 @@ return {
   --- @type blink.indent.Config
   opts = {
     scope = {
-      highlights = { 'NLBlinkIndentOrange' },
+      highlights = { 'NLBlinkIndentGray' },
     },
   },
 }
