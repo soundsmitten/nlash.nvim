@@ -42,6 +42,7 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 
 -- other
 util.uniqueKeymap('n', '<leader>mm', '<cmd>messages<cr>', { desc = 'Show messages' })
+util.uniqueKeymap('n', '<leader>G', '<cmd>Git<cr>', { desc = '🔀 Fugitive' })
 
 -- terminal exit
 util.uniqueKeymap('t', '<C-x>', '<C-\\><C-n>', { desc = 'Exit terminal' })
