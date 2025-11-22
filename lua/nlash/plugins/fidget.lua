@@ -5,6 +5,7 @@ return {
     local fidget = require 'fidget'
     fidget.setup {
       notification = {
+        override_vim_notify = true,
         window = {
           normal_hl = 'String', -- Base highlight group in the notification window
           winblend = 0, -- Background color opacity in the notification window
