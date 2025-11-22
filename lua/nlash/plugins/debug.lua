@@ -19,6 +19,19 @@ function SetupXcodebuildRosettaBuildArgs()
   end
 end
 
+function RemoveXcodebuildDebugKeymaps()
+  local util = require 'nlash.util'
+  util.safeKeymapDel('n', '<leader>dl')
+  util.safeKeymapDel('n', '<leader>dL')
+  util.safeKeymapDel('n', '<leader>dd')
+  util.safeKeymapDel('n', '<leader>dr')
+  util.safeKeymapDel('n', '<leader>dt')
+  util.safeKeymapDel('n', '<leader>dT')
+  util.safeKeymapDel('n', '<leader>b')
+  util.safeKeymapDel('n', '<leader>B')
+  util.safeKeymapDel('n', '<leader>dx')
+end
+
 function SetupXcodebuildDebugKeymaps()
   local xcodebuild = require 'xcodebuild.integrations.dap'
   --

@@ -66,5 +66,12 @@ return {
       end,
       desc = 'Goto T[y]pe Definition',
     },
+    {
+      '<leader>ss',
+      function()
+        require('mini.sessions').select()
+      end,
+      desc = 'Sessions',
+    },
   },
 }
