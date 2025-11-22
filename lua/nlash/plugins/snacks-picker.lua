@@ -92,7 +92,7 @@ return {
       desc = 'Grep Open Buffers',
     },
     {
-      '<leader>sc',
+      '<leader>sn',
       function()
         Snacks.picker.files { cwd = vim.fn.stdpath 'config' }
       end,
