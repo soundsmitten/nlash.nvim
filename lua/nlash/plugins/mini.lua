@@ -1,7 +1,6 @@
 -- Collection of various small independent plugins/modules
 return {
   'echasnovski/mini.nvim',
-  event = 'VeryLazy',
   config = function()
     -- Better Around/Inside textobjects
     --
@@ -61,8 +60,129 @@ return {
       return '%2l:%-2v'
     end
 
-    require("mini.move").setup()
+    require('mini.move').setup()
 
+    require('mini.sessions').setup()
+
+    -- Sessions
+    local function setup_sessions()
+      local sessions = require 'mini.sessions'
+
+      -- Derive session name from current working directory
+      local function session_name_from_cwd()
+        local cwd = vim.loop.cwd()
+        if not cwd or cwd == '' then
+          return nil
+        end
+        -- Use the last path segment (project folder name)
+        local name = vim.fn.fnamemodify(cwd, ':t')
+        -- Normalize to safe filename (no spaces, simple chars)
+        name = name:gsub('%s+', '_')
+        return name ~= '' and name or nil
+      end
+
+      -- Fallback to prompt if cwd doesn't yield a useful name
+      local function ensure_session_name()
+        local name = session_name_from_cwd()
+        if name then
+          return name
+        end
+        return vim.fn.input 'Session name: '
+      end
+
+      -- Save (write) the session for this project
+      vim.keymap.set('n', '<localleader>ss', function()
+        local name = ensure_session_name()
+        if name and name ~= '' then
+          sessions.write(name)
+          vim.notify('Session saved: ' .. name, vim.log.levels.INFO)
+        else
+          vim.notify('Session save cancelled (no name)', vim.log.levels.WARN)
+        end
+      end, { desc = 'Session: save (cwd)' })
+
+      -- Load (read) the session for this project
+      vim.keymap.set('n', '<localleader>sl', function()
+        local name = ensure_session_name()
+        if name and name ~= '' then
+          sessions.read(name)
+          vim.notify('Session loaded: ' .. name, vim.log.levels.INFO)
+        else
+          vim.notify('Session load cancelled (no name)', vim.log.levels.WARN)
+        end
+      end, { desc = 'Session: load (cwd)' })
+
+      -- Delete the session for this project
+      vim.keymap.set('n', '<localleader>sd', function()
+        local name = ensure_session_name()
+        if not name or name == '' then
+          vim.notify('Session delete cancelled (no name)', vim.log.levels.WARN)
+          return
+        end
+        local confirm = vim.fn.confirm("Delete session '" .. name .. "'?", '&Yes\n&No', 2)
+        if confirm == 1 then
+          sessions.delete(name)
+          vim.notify('Session deleted: ' .. name, vim.log.levels.INFO)
+        end
+      end, { desc = 'Session: delete (cwd)' })
+
+      -- Configure mini.sessions
+      sessions.setup {
+        directory = vim.fn.stdpath 'data' .. '/sessions',
+        autoread = false, -- don't auto-load on start
+        autowrite = true, -- auto-save on exit if a session is active
+        force = { delete = true },
+        -- verbose = true,
+        hooks = {
+          post = {
+            read = function()
+              vim.cmd 'NLXcodebuildRefresh'
+            end,
+          },
+        },
+      }
+
+      local function snacks_session_picker()
+        local names = require('mini.sessions').read_session_names()
+        if #names == 0 then
+          vim.notify('No sessions found', vim.log.levels.INFO)
+          return nil
+        end
+        -- Use Snacks picker
+        local Snacks = require 'snacks'
+        local selected
+        Snacks.picker({
+          title = 'Sessions',
+          items = names,
+          -- Simple formatter shows the name directly
+          format = function(item)
+            return item
+          end,
+          -- on_confirm gets the picked item
+          on_confirm = function(item)
+            selected = item
+          end,
+        }):start()
+
+        -- Snacks picker runs asynchronously; we need to wait until it sets `selected`
+        -- A tiny loop yields until user confirms or picker closes.
+        -- This keeps it simple without adding extra event wiring.
+        vim.wait(30000, function()
+          return selected ~= nil
+        end, 20, false)
+        return selected
+      end
+
+      -- Register the custom picker with mini.sessions
+      sessions.config = vim.tbl_deep_extend('force', sessions.config, {
+        -- mini.sessions uses `select()` which will call `config.selector`.
+        selector = snacks_session_picker,
+      })
+    end
+    setup_sessions()
+
+    -- Starter screen
+    require('mini.starter').setup {}
     -- ... and there is more!
     --  Check out: https://github.com/echasnovski/mini.nvim
   end,
