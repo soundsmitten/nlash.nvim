@@ -49,7 +49,6 @@ return {
     'stevearc/oil.nvim',
     'nvim-treesitter/nvim-treesitter',
   },
-  lazy = true,
   config = function()
     require('xcodebuild').setup {
       show_build_progress_bar = true,
