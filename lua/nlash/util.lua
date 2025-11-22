@@ -33,4 +33,17 @@ M.runGoProgram = function()
   end
 end
 
+M.safeKeymapDel = function(mode, lhs)
+  pcall(vim.keymap.del, mode, lhs)
+end
+
+M.messagesToBuffer = function()
+  local messages = vim.fn.execute('messages')
+  local bufnr = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, vim.split(messages, '\n'))
+  vim.api.nvim_win_set_buf(0, bufnr)
+  vim.bo[bufnr].buftype = 'nofile'
+  vim.bo[bufnr].filetype = 'messages'
+end
+
 return M
