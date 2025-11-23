@@ -44,7 +44,7 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 util.uniqueKeymap('n', '<leader>mm', '<cmd>messages<cr>', { desc = 'Show messages' })
 
 -- Fugitive
-util.uniqueKeymap('n', '<leader>gg', '<cmd>Git<cr>', { desc = '🔀 Fugitive' })
+util.uniqueKeymap('n', '<leader>gg', '<cmd>vertical Git<cr>', { desc = '🔀 Fugitive' })
 
 -- New tab with Fugitive status as the only window
 vim.keymap.set('n', '<leader>GG', '<cmd>tabnew|Git|only<cr>', {
