@@ -16,7 +16,7 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', 'x', '"_x')
 
 vim.keymap.del('n', '<C-l>')
-util.uniqueKeymap('n', '<C-l>', '<C-w>l', { desc = 'Change window to right'} )
+util.uniqueKeymap('n', '<C-l>', '<C-w>l', { desc = 'Change window to right' })
 util.uniqueKeymap('n', '<C-h>', '<C-w>h', { desc = 'Change window to left' })
 util.uniqueKeymap('n', '<C-j>', '<C-w>j', { desc = 'Change window to bottom' })
 util.uniqueKeymap('n', '<C-k>', '<C-w>k', { desc = 'Change window to top' })
@@ -45,9 +45,7 @@ util.uniqueKeymap('n', '<leader>mm', '<cmd>messages<cr>', { desc = 'Show message
 
 -- Fugitive
 util.uniqueKeymap('n', '<leader>gg', '<cmd>vertical Git<cr>', { desc = '🔀 Fugitive' })
-
--- New tab with Fugitive status as the only window
-vim.keymap.set('n', '<leader>GG', '<cmd>tabnew|Git|only<cr>', {
+util.uniqueKeymap('n', '<leader>GG', '<cmd>tabnew|Git|only<cr>', {
   silent = true,
   desc = '🔀 Fugitive (new tab)',
 })
@@ -61,6 +59,12 @@ vim.keymap.del('x', 'gc')
 vim.keymap.del('o', 'gc')
 
 -- Folding keymaps
-util.uniqueKeymap('n', '<leader>f1', function() vim.opt.foldlevel = 0 end, { desc = 'Fold: Level 1' })
-util.uniqueKeymap('n', '<leader>f2', function() vim.opt.foldlevel = 1 end, { desc = 'Fold: Level 2' })
-util.uniqueKeymap('n', '<leader>f3', function() vim.opt.foldlevel = 2 end, { desc = 'Fold: Level 3' })
+util.uniqueKeymap('n', '<leader>f1', function()
+  vim.opt.foldlevel = 0
+end, { desc = 'Fold: Level 1' })
+util.uniqueKeymap('n', '<leader>f2', function()
+  vim.opt.foldlevel = 1
+end, { desc = 'Fold: Level 2' })
+util.uniqueKeymap('n', '<leader>f3', function()
+  vim.opt.foldlevel = 2
+end, { desc = 'Fold: Level 3' })
