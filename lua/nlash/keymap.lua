@@ -15,41 +15,38 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- disable updating register for x
 vim.keymap.set('n', 'x', '"_x')
 
+-- Window management
 vim.keymap.del('n', '<C-l>')
 util.uniqueKeymap('n', '<C-l>', '<C-w>l', { desc = 'Change window to right' })
 util.uniqueKeymap('n', '<C-h>', '<C-w>h', { desc = 'Change window to left' })
 util.uniqueKeymap('n', '<C-j>', '<C-w>j', { desc = 'Change window to bottom' })
 util.uniqueKeymap('n', '<C-k>', '<C-w>k', { desc = 'Change window to top' })
 util.uniqueKeymap('n', '<C-x>', '<cmd>close<CR>', { desc = 'Close current split' })
-
--- tabs management
-util.uniqueKeymap('n', '<leader>tn', '<cmd>tabnew<CR>', { desc = 'Open new tab' })
-util.uniqueKeymap('n', '<leader>td', '<cmd>tabclose<CR>', { desc = 'Close current tab' })
-
--- buffers management
-util.uniqueKeymap('n', '<leader>bn', '<cmd>new<CR>', { desc = 'New buffer' })
-util.uniqueKeymap('n', '<leader>bd', '<cmd>bd<CR>', { desc = 'Close current buffer' })
-util.uniqueKeymap('n', '<leader>bx', '<cmd>%bd|e#|bd#<CR>', { desc = 'Close all buffers but this' })
+util.uniqueKeymap('n', '<C-o>', '<C-w>o', { desc = 'Close other splits' })
+util.uniqueKeymap('n', '<C-S-l>', '<C-w><', { desc = 'Decrease window width' })
+util.uniqueKeymap('n', '<C-S-h>', '<C-w>>', { desc = 'Increase window width' })
+util.uniqueKeymap('n', '<C-S-k>', '<C-w>-', { desc = 'Decrease window height' })
+util.uniqueKeymap('n', '<C-S-j>', '<C-w>+', { desc = 'Increase window height' })
 
 -- copy & paste
--- vim.keymap.set('x', 'p', '"_dP')
 vim.keymap.set('x', 'Y', 'y$', { desc = 'Yank to end of line' })
-vim.keymap.set('', '<leader>DD', '"_dd', { desc = 'Delete without changing register' })
 
 -- scrolling
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
+
+-- Ctrl+Shift+hjkl for resizing 
 
 -- other
 util.uniqueKeymap('n', '<leader>mm', '<cmd>messages<cr>', { desc = 'Show messages' })
 
 -- Fugitive
 util.uniqueKeymap('n', '<leader>gg', '<cmd>vertical Git<cr>', { desc = '🔀 Fugitive' })
-util.uniqueKeymap('n', '<leader>GG', '<cmd>tabnew|Git|only<cr>', {
+util.uniqueKeymap('n', '<leader>gG', '<cmd>tabnew|Git|only<cr>', {
   silent = true,
   desc = '🔀 Fugitive (new tab)',
 })
--- terminal exit
+-- terminal exi't
 util.uniqueKeymap('t', '<C-x>', '<C-\\><C-n>', { desc = 'Exit terminal' })
 
 -- Disable Neovim's built-in commenting (0.10+)

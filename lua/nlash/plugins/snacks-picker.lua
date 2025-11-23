@@ -144,13 +144,6 @@ return {
       desc = 'LSP Symbols',
     },
     {
-      '<leader>ws',
-      function()
-        Snacks.picker.lsp_workspace_symbols()
-      end,
-      desc = 'LSP Workspace Symbols',
-    },
-    {
       '<leader>sd',
       function()
         Snacks.picker.diagnostics()

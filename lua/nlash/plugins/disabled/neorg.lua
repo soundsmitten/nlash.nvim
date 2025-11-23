@@ -1,6 +1,6 @@
 return {
   'nvim-neorg/neorg',
-  lazy = false,
+  lazy = true,
   version = '*', -- Pin Neorg to the latest stable release
   config = function()
     require('neorg').setup {

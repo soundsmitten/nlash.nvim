@@ -20,6 +20,7 @@
 -- }
 return {
   'svin24/accent.nvim',
+  priority = 1000, -- Make sure to load this before all the other start plugins.
   config = function()
     require('accent').setup {
       -- color to use, removing this line uses a random accent color

@@ -83,3 +83,6 @@ vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.opt.foldlevel = 99 -- Start with all folds open
 vim.opt.foldlevelstart = 99 -- Start with all folds open when opening a file
+
+-- Enable syntax highlighting
+vim.cmd('syntax enable')
