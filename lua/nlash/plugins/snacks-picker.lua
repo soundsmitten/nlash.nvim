@@ -180,14 +180,14 @@ return {
       desc = 'Git Log Line',
     },
     {
-      '<leader>gs',
+      '<leader>gS',
       function()
         Snacks.picker.git_status()
       end,
       desc = 'Git Status',
     },
     {
-      '<leader>gS',
+      '<leader>gs',
       function()
         Snacks.picker.git_stash()
       end,
