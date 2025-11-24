@@ -25,10 +25,25 @@ return {
 
     -- Add/delete/replace surroundings (brackets, quotes, etc.)
     --
-    -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-    -- - sd'   - [S]urround [D]elete [']quotes
-    -- - sr)'  - [S]urround [R]eplace [)] [']
-    require('mini.surround').setup()
+    -- - csaiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
+    -- - csd'   - [S]urround [D]elete [']quotes
+    -- - csr)'  - [S]urround [R]eplace [)] [']
+    require('mini.surround').setup(
+      -- No need to copy this inside `setup()`. Will be used automatically.
+      {
+        mappings = {
+          add = 'csa', -- Add surrounding in Normal and Visual modes
+          delete = 'csd', -- Delete surrounding
+          find = 'csf', -- Find surrounding (to the right)
+          find_left = 'csF', -- Find surrounding (to the left)
+          highlight = 'csh', -- Highlight surrounding
+          replace = 'csr', -- Replace surrounding
+
+          suffix_last = 'l', -- Suffix to search with "prev" method
+          suffix_next = 'n', -- Suffix to search with "next" method
+        },
+      }
+    )
 
     -- navigation with [ ]
     require('mini.bracketed').setup {

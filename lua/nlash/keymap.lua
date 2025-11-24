@@ -4,7 +4,7 @@ local keymap = vim.keymap
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
-vim.g.maplocalleader = ','
+vim.g.maplocalleader = '\\'
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
@@ -21,8 +21,7 @@ util.uniqueKeymap('n', '<C-l>', '<C-w>l', { desc = 'Change window to right' })
 util.uniqueKeymap('n', '<C-h>', '<C-w>h', { desc = 'Change window to left' })
 util.uniqueKeymap('n', '<C-j>', '<C-w>j', { desc = 'Change window to bottom' })
 util.uniqueKeymap('n', '<C-k>', '<C-w>k', { desc = 'Change window to top' })
-util.uniqueKeymap('n', '<C-x>', '<cmd>close<CR>', { desc = 'Close current split' })
-util.uniqueKeymap('n', '<C-o>', '<C-w>o', { desc = 'Close other splits' })
+
 util.uniqueKeymap('n', '<C-S-l>', '<C-w><', { desc = 'Decrease window width' })
 util.uniqueKeymap('n', '<C-S-h>', '<C-w>>', { desc = 'Increase window width' })
 util.uniqueKeymap('n', '<C-S-k>', '<C-w>-', { desc = 'Decrease window height' })

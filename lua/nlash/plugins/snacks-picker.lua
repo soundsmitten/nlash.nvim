@@ -22,18 +22,21 @@ return {
       function()
         Snacks.picker.keymaps()
       end,
+      desc = 'Keymaps',
     },
     {
       '<leader>s.',
       function()
         Snacks.picker.recent()
       end,
+      desc = 'Recent Files',
     },
     {
       '<leader>sr',
       function()
         Snacks.picker.resume()
       end,
+      desc = 'Resume Last Picker',
     },
 
     {
@@ -41,6 +44,7 @@ return {
       function()
         Snacks.picker.pickers()
       end,
+      desc = 'Pickers',
     },
     {
       '<leader>sg',
