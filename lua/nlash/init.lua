@@ -26,3 +26,7 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
   pattern = { 'Podfile.lock' },
   command = 'set filetype=yaml',
 })
+
+vim.api.nvim_create_user_command('MessagesToBuffer', function()
+  require('nlash.util').messagesToBuffer()
+end, {})
