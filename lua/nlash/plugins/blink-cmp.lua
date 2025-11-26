@@ -4,26 +4,11 @@ return { -- Autocompletion
   version = '1.*',
   dependencies = {
     -- Snippet Engine
-    {
-      'L3MON4D3/LuaSnip',
-      build = (function()
-        -- Build Step is needed for regex support in snippets.
-        -- This step is not supported in many windows environments.
-        -- Remove the below condition to re-enable on windows.
-        if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
-          return
-        end
-        return 'make install_jsregexp'
-      end)(),
-    },
-
-    -- `friendly-snippets` contains a variety of premade snippets.
-    --    See the README about individual language/framework/plugin snippets:
-    'rafamadriz/friendly-snippets',
+    'L3MON4D3/LuaSnip',
 
     'onsails/lspkind.nvim', -- vs-code like pictograms
     'folke/lazydev.nvim',
-    "fang2hou/blink-copilot",
+    'fang2hou/blink-copilot',
   },
 
   --- @module 'blink.cmp'
@@ -54,7 +39,7 @@ return { -- Autocompletion
       preset = 'default',
 
       ['<C-g>'] = { 'select_and_accept' },
-      
+
       -- Disable Tab/S-Tab to allow normal Tab behavior and avoid conflicts
       ['<Tab>'] = {},
       ['<S-Tab>'] = {},

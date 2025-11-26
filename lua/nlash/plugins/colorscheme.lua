@@ -34,7 +34,7 @@ return {
 
 
       -- makes the background and some text colours darker.
-      accent_darken = false,
+      accent_darken = true,
 
       -- inverts the colour of the status line text.
       invert_status = false,

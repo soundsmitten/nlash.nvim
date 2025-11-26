@@ -29,4 +29,12 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
 
 vim.api.nvim_create_user_command('MessagesToBuffer', function()
   require('nlash.util').messagesToBuffer()
-end, {})
+end, {
+  desc = 'Show messages in a new buffer',
+})
+
+vim.api.nvim_create_user_command('BufOnly', function()
+  vim.cmd "silent! execute '%bd|e#|bd#'"
+end, {
+  desc = 'Close all buffers except the current one (silent)',
+})
