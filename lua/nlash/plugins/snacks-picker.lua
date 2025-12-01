@@ -7,6 +7,7 @@ return {
         current = true,
       },
     },
+    image = { enabled = false, formats = {} },
   },
 
   keys = {
