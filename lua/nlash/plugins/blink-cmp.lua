@@ -4,7 +4,7 @@ return { -- Autocompletion
   version = '1.*',
   dependencies = {
     -- Snippet Engine
-    'L3MON4D3/LuaSnip',
+    -- 'L3MON4D3/LuaSnip',
 
     'onsails/lspkind.nvim', -- vs-code like pictograms
     'folke/lazydev.nvim',
@@ -61,7 +61,7 @@ return { -- Autocompletion
     },
 
     sources = {
-      default = { 'lsp', 'buffer', 'path', 'snippets', 'lazydev', 'copilot' },
+      default = { 'lsp', 'buffer', 'path', 'lazydev', 'copilot' }, -- removed 'snippets'
       providers = {
         copilot = {
           name = 'copilot',
@@ -73,7 +73,7 @@ return { -- Autocompletion
       },
     },
 
-    snippets = { preset = 'luasnip' },
+    -- snippets = { preset = 'luasnip' },
 
     -- Blink.cmp includes an optional, recommended rust fuzzy matcher,
     -- which automatically downloads a prebuilt binary when enabled.
