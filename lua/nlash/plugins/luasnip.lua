@@ -1,5 +1,6 @@
 return {
   'L3MON4D3/LuaSnip',
+  lazy = true,
   dependencies = {
     -- `friendly-snippets` contains a variety of premade snippets.
     --    See the README about individual language/framework/plugin snippets:
