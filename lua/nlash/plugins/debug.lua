@@ -21,8 +21,6 @@ end
 
 function RemoveXcodebuildDebugKeymaps()
   local util = require 'nlash.util'
-  util.safeKeymapDel('n', '<leader>dl')
-  util.safeKeymapDel('n', '<leader>dL')
   util.safeKeymapDel('n', '<leader>dd')
   util.safeKeymapDel('n', '<leader>dr')
   util.safeKeymapDel('n', '<leader>dt')
@@ -35,16 +33,6 @@ end
 function SetupXcodebuildDebugKeymaps()
   local xcodebuild = require 'xcodebuild.integrations.dap'
   --
-  vim.keymap.set('n', '<leader>dl', function()
-    SetupXcodebuildRosettaBuildArgs()
-    xcodebuild.build_and_debug()
-  end, { desc = 'Build and Debug (Rosetta)' })
-
-  vim.keymap.set('n', '<leader>dL', function()
-    SetupXcodebuildRosettaBuildArgs()
-    xcodebuild.debug_class_tests()
-  end, { desc = 'Test Sim pattern Debug Class Tests (Rosetta)' })
-
   vim.keymap.set('n', '<leader>dd', function()
     SetupXcodebuildRosettaBuildArgs()
     xcodebuild.build_and_debug()
@@ -55,12 +43,13 @@ function SetupXcodebuildDebugKeymaps()
   end, { desc = 'Debug Without Building' })
   vim.keymap.set('n', '<leader>dt', function()
     SetupXcodebuildRosettaBuildArgs()
-    xcodebuild.debug_tests()
-  end, { desc = 'Debug Tests' })
+    vim.cmd 'XcodebuildTestExplorerShow'
+    vim.cmd 'XcodebuildTest'
+  end, { desc = 'Run Tests' })
   vim.keymap.set('n', '<leader>dT', function()
     SetupXcodebuildRosettaBuildArgs()
-    xcodebuild.debug_class_tests()
-  end, { desc = 'Debug Class Tests' })
+    xcodebuild.debug_tests()
+  end, { desc = 'Debug Tests' })
 
   vim.keymap.set('n', '<leader>b', xcodebuild.toggle_breakpoint, { desc = 'Toggle Breakpoint' })
   vim.keymap.set('n', '<leader>B', xcodebuild.toggle_message_breakpoint, { desc = 'Toggle Message Breakpoint' })
