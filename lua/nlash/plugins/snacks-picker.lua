@@ -141,11 +141,18 @@ return {
       desc = 'Sessions',
     },
     {
-      '<leader>ds',
+      '<leader>sy',
       function()
         Snacks.picker.lsp_symbols()
       end,
-      desc = 'LSP Symbols',
+      desc = 'LSP S[y]mbols',
+    },
+    {
+      '<leader>sY',
+      function()
+        Snacks.picker.lsp_workspace_symbols()
+      end,
+      desc = 'LSP Workspace S[Y]mbols',
     },
     {
       '<leader>sd',
@@ -153,6 +160,32 @@ return {
         Snacks.picker.diagnostics()
       end,
       desc = 'Help',
+    },
+    {
+      '<leader>he',
+      function()
+        local argfiles = {}
+        for i = 0, vim.fn.argc() - 1 do
+          local file = vim.fn.argv(i)
+          if file and file ~= '' then
+            table.insert(argfiles, {
+              idx = i + 1,
+              text = string.format('%d %s', i + 1, file),
+              file = file,
+            })
+          end
+        end
+
+        if #argfiles == 0 then
+          vim.notify('No files in arglist', vim.log.levels.INFO)
+          return
+        end
+
+        Snacks.picker.pick {
+          items = argfiles,
+        }
+      end,
+      desc = 'Arglist Files',
     },
     -- git
     {

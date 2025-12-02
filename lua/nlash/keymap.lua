@@ -64,3 +64,8 @@ end, { desc = 'Fold: Level 2' })
 util.uniqueKeymap('n', '<leader>f3', function()
   vim.opt.foldlevel = 2
 end, { desc = 'Fold: Level 3' })
+
+-- Arglist management (harpoon-style)
+util.uniqueKeymap('n', '<leader>ha', '<cmd>argadd %<cr>', { desc = 'Add current file to arglist' })
+util.uniqueKeymap('n', '<leader>hd', '<cmd>argdel %<cr>', { desc = 'Remove current file from arglist' })
+util.uniqueKeymap('n', '<leader>hc', '<cmd>argd *<cr>', { desc = 'Clear arglist' })

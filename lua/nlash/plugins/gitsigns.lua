@@ -45,31 +45,31 @@ return { -- Adds git related signs to the gutter, as well as utilities for manag
         end, { desc = 'Navigate to next hunk' })
 
         -- Actions
-        map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'Stage hunk' })
-        map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'Stage buffer' })
-        map('n', '<leader>hr', function()
+        map('n', '<leader>ghs', gitsigns.stage_hunk, { desc = 'Stage hunk' })
+        map('n', '<leader>ghS', gitsigns.stage_buffer, { desc = 'Stage buffer' })
+        map('n', '<leader>ghr', function()
           if vim.fn.confirm('Reset hunk?', '&Yes\n&No', 2) == 1 then
             gitsigns.reset_hunk()
           end
         end, { desc = 'Reset hunk (with confirmation)' })
-        map('n', '<leader>hR', function()
+        map('n', '<leader>ghR', function()
           if vim.fn.confirm('Reset entire buffer?', '&Yes\n&No', 2) == 1 then
             gitsigns.reset_buffer()
           end
         end, { desc = 'Reset buffer (with confirmation)' })
 
-        map('v', '<leader>hs', function()
+        map('v', '<leader>ghs', function()
           gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
         end, { desc = 'Stage hunk' })
 
-        map('v', '<leader>hr', function()
+        map('v', '<leader>ghr', function()
           if vim.fn.confirm('Reset selected hunk?', '&Yes\n&No', 2) == 1 then
             gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
           end
         end, { desc = 'Reset hunk (with confirmation)' })
 
-        map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'Preview hunk' })
-        map('n', '<leader>hi', gitsigns.preview_hunk_inline, { desc = 'Preview hunk inline' })
+        map('n', '<leader>ghp', gitsigns.preview_hunk, { desc = 'Preview hunk' })
+        map('n', '<leader>ghi', gitsigns.preview_hunk_inline, { desc = 'Preview hunk inline' })
         -- map('n', '<leader>hQ', function()
         --   gitsigns.setqflist 'all'
         -- end, { desc = 'Quickfix list all hunks' })

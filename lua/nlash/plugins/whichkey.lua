@@ -14,7 +14,7 @@ return {
       { '<leader>f_', hidden = true },
       { '<leader>g', group = '[G]it' },
       { '<leader>g_', hidden = true },
-      { '<leader>h', group = 'Git [H]unk' },
+      { '<leader>h', group = 'Args ([H]arpoon-ish)' },
       { '<leader>h_', hidden = true },
       { '<leader>m', group = '[M]isc' },
       { '<leader>m_', hidden = true },
@@ -27,20 +27,5 @@ return {
       { '<localleader>s', group = '[S]essions' },
       { '<localleader>s_', hidden = true },
     }
-
-    -- visual mode
-    require('which-key').add {
-      { '<leader>h', desc = 'Git [H]unk', mode = 'v' },
-    }
-
-    -- filetype specific
-    vim.api.nvim_create_autocmd('FileType', {
-      pattern = 'norg',
-      callback = function()
-        require('which-key').add {
-          { '<localleader>', group = 'Neorg', buffer = 0 },
-        }
-      end,
-    })
   end,
 }
