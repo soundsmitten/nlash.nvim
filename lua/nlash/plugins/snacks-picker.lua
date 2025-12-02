@@ -6,6 +6,7 @@ return {
         file = false,
         current = true,
       },
+      gh_pr = {},
     },
     image = { enabled = false, formats = {} },
   },
@@ -237,6 +238,21 @@ return {
         Snacks.picker.git_log_file()
       end,
       desc = 'Git Log File',
+    },
+    -- Github
+    {
+      '<leader>gp',
+      function()
+        Snacks.picker.gh_pr()
+      end,
+      desc = 'GitHub Pull Requests (open)',
+    },
+    {
+      '<leader>gP',
+      function()
+        Snacks.picker.gh_pr { state = 'all' }
+      end,
+      desc = 'GitHub Pull Requests (all)',
     },
   },
 }
