@@ -34,7 +34,7 @@ vim.keymap.set('x', 'Y', 'y$', { desc = 'Yank to end of line' })
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 
--- Ctrl+Shift+hjkl for resizing 
+-- Ctrl+Shift+hjkl for resizing
 
 -- other
 util.uniqueKeymap('n', '<leader>mm', '<cmd>messages<cr>', { desc = 'Show messages' })
@@ -67,17 +67,29 @@ end, { desc = 'Fold: Level 3' })
 
 -- Arglist management (harpoon-style)
 util.uniqueKeymap('n', '<leader>ha', function()
-  vim.cmd('argadd %')
-  vim.notify('Added ' .. vim.fn.expand('%:t') .. ' to arglist')
+  vim.cmd 'argadd %'
+  vim.notify('Added ' .. vim.fn.expand '%:t' .. ' to arglist')
 end, { desc = 'Add current file to arglist' })
 
 util.uniqueKeymap('n', '<leader>hd', function()
-  local filename = vim.fn.expand('%:t')
-  vim.cmd('argdel %')
+  local filename = vim.fn.expand '%:t'
+  vim.cmd 'argdel %'
   vim.notify('Removed ' .. filename .. ' from arglist')
 end, { desc = 'Remove current file from arglist' })
 
 util.uniqueKeymap('n', '<leader>hc', function()
-  vim.cmd('argd *')
-  vim.notify('Cleared arglist')
+  vim.cmd 'argd *'
+  vim.notify 'Cleared arglist'
 end, { desc = 'Clear arglist' })
+
+for i = 1, 5 do
+  util.uniqueKeymap('n', '<C-' .. i .. '>', function()
+    -- silent fallback if the index doesn't exist
+    local ok = pcall(function()
+      vim.cmd('argument ' .. i)
+    end)
+    if not ok then
+      vim.notify('No arglist entry ' .. i, vim.log.levels.WARN)
+    end
+  end, { desc = 'Jump to arglist entry ' .. i })
+end
