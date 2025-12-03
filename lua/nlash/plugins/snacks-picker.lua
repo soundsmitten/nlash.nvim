@@ -185,6 +185,7 @@ return {
 
         Snacks.picker.pick {
           items = argfiles,
+          title = 'Arglist Files',
         }
       end,
       desc = 'Arglist Files',
