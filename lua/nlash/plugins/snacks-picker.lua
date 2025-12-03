@@ -172,7 +172,7 @@ return {
           if file and file ~= '' then
             table.insert(argfiles, {
               idx = i + 1,
-              text = string.format('%d %s', i + 1, file),
+              text = file,
               file = file,
             })
           end
