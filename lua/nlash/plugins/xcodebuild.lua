@@ -110,9 +110,18 @@ function SetupXcodebuildKeymaps()
   vim.keymap.set('n', '<leader>xB', '<cmd>XcodebuildBuildForTesting<cr>', { desc = 'Build For Testing' })
   vim.keymap.set('n', '<leader>xr', '<cmd>XcodebuildBuildRun<cr>', { desc = 'Build & Run Project' })
 
-  vim.keymap.set('n', '<leader>xt', '<cmd>XcodebuildTest<cr>', { desc = 'Run Tests' })
-  vim.keymap.set('v', '<leader>xt', '<cmd>XcodebuildTestSelected<cr>', { desc = 'Run Selected Tests' })
-  vim.keymap.set('n', '<leader>xT', '<cmd>XcodebuildTestClass<cr>', { desc = 'Run This Test Class' })
+  vim.keymap.set('n', '<leader>xt', function()
+    vim.cmd 'XcodebuildTestExplorerShow'
+    vim.cmd 'XcodebuildTest'
+  end, { desc = 'Run Tests' })
+  vim.keymap.set('v', '<leader>xt', function()
+    vim.cmd 'XcodebuildTestExplorerShow'
+    vim.cmd 'XcodebuildTestSelected'
+  end, { desc = 'Run Selected Tests' })
+  vim.keymap.set('n', '<leader>xT', function()
+    vim.cmd 'XcodebuildTestExplorerShow'
+    vim.cmd 'XcodebuildTestClass'
+  end, { desc = 'Run This Test Class' })
 
   vim.keymap.set('n', '<leader>xl', '<cmd>XcodebuildToggleLogs<cr>', { desc = 'Toggle Xcodebuild Logs' })
   vim.keymap.set('n', '<leader>xc', '<cmd>XcodebuildToggleCodeCoverage<cr>', { desc = 'Toggle Code Coverage' })

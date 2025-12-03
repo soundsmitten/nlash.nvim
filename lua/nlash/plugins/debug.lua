@@ -32,7 +32,7 @@ end
 
 function SetupXcodebuildDebugKeymaps()
   local xcodebuild = require 'xcodebuild.integrations.dap'
-  --
+
   vim.keymap.set('n', '<leader>dd', function()
     SetupXcodebuildRosettaBuildArgs()
     xcodebuild.build_and_debug()
@@ -44,12 +44,13 @@ function SetupXcodebuildDebugKeymaps()
   vim.keymap.set('n', '<leader>dt', function()
     SetupXcodebuildRosettaBuildArgs()
     vim.cmd 'XcodebuildTestExplorerShow'
-    vim.cmd 'XcodebuildTest'
-  end, { desc = 'Run Tests' })
-  vim.keymap.set('n', '<leader>dT', function()
-    SetupXcodebuildRosettaBuildArgs()
     xcodebuild.debug_tests()
   end, { desc = 'Debug Tests' })
+  vim.keymap.set('n', '<leader>dT', function()
+    SetupXcodebuildRosettaBuildArgs()
+    vim.cmd 'XcodebuildTestExplorerShow'
+    xcodebuild.debug_class_tests()
+  end, { desc = 'Debug Class Tests' })
 
   vim.keymap.set('n', '<leader>b', xcodebuild.toggle_breakpoint, { desc = 'Toggle Breakpoint' })
   vim.keymap.set('n', '<leader>B', xcodebuild.toggle_message_breakpoint, { desc = 'Toggle Message Breakpoint' })
