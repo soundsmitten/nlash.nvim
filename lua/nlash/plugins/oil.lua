@@ -80,6 +80,59 @@ return {
           ['<C-c>'] = false, -- { 'actions.close', mode = 'n' },
           ['<C-l>'] = false, -- 'actions.refresh',
           ['gl'] = 'actions.refresh',
+          ['<leader>aa'] = {
+            desc = 'Add file(s) to arglist',
+            mode = { 'n', 'v' },
+            callback = function()
+              local dir = oil.get_current_dir()
+              if not dir then
+                return
+              end
+
+              local entries = {}
+              local mode = vim.api.nvim_get_mode().mode
+
+              if mode == 'v' or mode == 'V' then
+                -- Visual mode: get selected entries
+                local start_line = vim.fn.line 'v'
+                local end_line = vim.fn.line '.'
+                if start_line > end_line then
+                  start_line, end_line = end_line, start_line
+                end
+
+                for line = start_line, end_line do
+                  local entry = oil.get_entry_on_line(0, line)
+                  if entry and entry.type == 'file' then
+                    table.insert(entries, entry)
+                  end
+                end
+              else
+                -- Normal mode: get entry under cursor
+                local entry = oil.get_cursor_entry()
+                if entry and entry.type == 'file' then
+                  table.insert(entries, entry)
+                end
+              end
+
+              if #entries == 0 then
+                vim.notify('No files to add to arglist', vim.log.levels.WARN)
+                return
+              end
+
+              local added_files = {}
+              for _, entry in ipairs(entries) do
+                local path = dir .. entry.name
+                vim.cmd('argadd ' .. vim.fn.fnameescape(path))
+                table.insert(added_files, entry.name)
+              end
+
+              if #added_files == 1 then
+                vim.notify('Added ' .. added_files[1] .. ' to arglist')
+              else
+                vim.notify('Added ' .. #added_files .. ' files to arglist')
+              end
+            end,
+          },
         },
       }
     end,
