@@ -54,15 +54,12 @@ local function setupXcodebuildKeymaps()
   vim.keymap.set('n', '<leader>xr', '<cmd>XcodebuildBuildRun<cr>', { desc = 'Build & Run Project' })
 
   vim.keymap.set('n', '<leader>xt', function()
-    vim.cmd 'XcodebuildTestExplorerShow'
     vim.cmd 'XcodebuildTest'
   end, { desc = 'Run Tests' })
   vim.keymap.set('v', '<leader>xt', function()
-    vim.cmd 'XcodebuildTestExplorerShow'
     vim.cmd 'XcodebuildTestSelected'
   end, { desc = 'Run Selected Tests' })
   vim.keymap.set('n', '<leader>xT', function()
-    vim.cmd 'XcodebuildTestExplorerShow'
     vim.cmd 'XcodebuildTestClass'
   end, { desc = 'Run This Test Class' })
 
@@ -89,12 +86,10 @@ local function setupXcodebuildKeymaps()
   end, { desc = 'Debug Without Building' })
   vim.keymap.set('n', '<leader>dt', function()
     setupXcodebuildRosettaBuildArgs()
-    vim.cmd 'XcodebuildTestExplorerShow'
     xcodebuild.debug_tests()
   end, { desc = 'Debug Tests' })
   vim.keymap.set('n', '<leader>dT', function()
     setupXcodebuildRosettaBuildArgs()
-    vim.cmd 'XcodebuildTestExplorerShow'
     xcodebuild.debug_class_tests()
   end, { desc = 'Debug Class Tests' })
 
