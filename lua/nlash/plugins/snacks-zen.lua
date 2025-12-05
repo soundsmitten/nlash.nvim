@@ -1,15 +1,15 @@
 return {
-  "folke/snacks.nvim",
+  'folke/snacks.nvim',
   opts = {
-    zen = { enabled = true },
+    zen = { enabled = true, toggles = { dim = false } },
   },
   keys = {
     {
-      "<leader>zz",
+      '<leader>zz',
       function()
         Snacks.zen()
       end,
-      desc = "Toggle Zen Mode",
+      desc = 'Toggle Zen Mode',
     },
   },
 }

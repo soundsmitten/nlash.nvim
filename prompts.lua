@@ -11,11 +11,10 @@ return {
   review = 'Can you review {file} for any issues or improvements?',
   tests = 'Can you write tests for {this}?',
 
-  -- custom
-  pr = 'Compare my changes to the main branch and help me draft a PR. Please pull request template inside of the .github directory, if available.',
+  pr = "Compare my changes to the main branch and help me submit a PR via gh CLI. I have already pushed the branch to my fork, DO NOT push code. Please pull request template inside of the .github directory, if available. If there are checkboxes when using the template, check them all",
   commit = 'Help me write a commit based on staged changes. Please use git commit guidelines inside of the .github directory, if available.',
 
-  -- simple context prompts
+  -- context prompts
   buffers = '{buffers}',
   file = '{file}',
   line = '{line}',
@@ -26,8 +25,7 @@ return {
   class = '{class}',
   arglist = function()
     local files = {}
-    local cwd = vim.fn.getcwd()
-    
+
     for i = 0, vim.fn.argc() - 1 do
       local file = vim.fn.argv(i)
       if file and file ~= '' and file ~= '.' then
@@ -36,7 +34,7 @@ return {
         table.insert(files, '@' .. relative_path)
       end
     end
-    
+
     return table.concat(files, ' ')
   end,
 }
