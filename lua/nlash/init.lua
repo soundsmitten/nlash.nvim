@@ -45,6 +45,14 @@ end, {
   desc = 'Clear arglist and quit',
 })
 
+-- Prevent auto-fold weirdness in org files
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'org',
+  callback = function()
+    vim.opt_local.foldlevel = 99
+  end,
+})
+
 local numbertoggle = vim.api.nvim_create_augroup('numbertoggle', {})
 vim.api.nvim_create_autocmd({ 'BufEnter', 'FocusGained', 'InsertLeave', 'WinEnter', 'CmdlineLeave' }, {
   group = numbertoggle,
