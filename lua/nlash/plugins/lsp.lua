@@ -132,6 +132,10 @@ return { -- LSP Configuration & Plugins
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
           end, '[T]oggle Inlay [H]ints')
         end
+
+        -- Disable built-in snippet Tab mappings to avoid conflicts with blink-cmp
+        pcall(vim.keymap.del, 'i', '<Tab>', { buffer = event.buf })
+        pcall(vim.keymap.del, 'i', '<S-Tab>', { buffer = event.buf })
       end,
     })
 

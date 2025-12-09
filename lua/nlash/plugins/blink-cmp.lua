@@ -41,9 +41,9 @@ return { -- Autocompletion
       ['<C-g>'] = { 'select_and_accept' },
       ['<C-y>'] = {},
 
-      -- Disable Tab/S-Tab to allow normal Tab behavior and avoid conflicts
-      ['<Tab>'] = { 'snippet_forward' },
-      ['<S-Tab>'] = { 'snippet_backward' },
+      -- Tab for snippet navigation with fallback to normal behavior
+      ['<Tab>'] = { 'snippet_forward', 'fallback' },
+      ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
 
       -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
       --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
