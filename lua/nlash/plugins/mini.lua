@@ -78,8 +78,6 @@ return {
 
     require('mini.move').setup()
 
-    require('mini.sessions').setup()
-
     -- Sessions
     local function setup_sessions()
       local sessions = require 'mini.sessions'
