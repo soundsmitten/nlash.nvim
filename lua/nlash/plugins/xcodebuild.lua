@@ -114,32 +114,35 @@ local function getXcodebuildConfig()
       auto_close_on_app_launch = true,
       only_summary = true,
       notify = function(message, severity)
-        local fidget = require 'fidget'
+        local snacks = require 'snacks'
         if progress_handle then
-          progress_handle.message = message
           if not message:find 'Loading' then
-            progress_handle:finish()
+            snacks.notifier.hide(progress_handle)
             progress_handle = nil
             if vim.trim(message) ~= '' then
-              fidget.notify(message, severity)
+              snacks.notify(message, severity)
             end
           end
         else
-          fidget.notify(message, severity)
+          snacks.notify(message, severity)
         end
       end,
       notify_progress = function(message)
-        local progress = require 'fidget.progress'
+        local snacks = require 'snacks'
+        local spinner = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' }
 
-        if progress_handle then
-          progress_handle.title = ''
-          progress_handle.message = message
-        else
-          progress_handle = progress.handle.create {
-            message = message,
-            lsp_client = { name = 'xcodebuild.nvim' },
-          }
+        if not progress_handle then
+          progress_handle = 'xcodebuild_progress'
         end
+
+        snacks.notifier.notify(message, 'info', {
+          id = progress_handle,
+          title = 'xcodebuild.nvim',
+          timeout = false,
+          opts = function(notif)
+            notif.icon = spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+          end,
+        })
       end,
       integrations = {
         pymobiledevice = {

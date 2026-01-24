@@ -12,7 +12,7 @@ return {
       auto_install = true,
       highlight = {
         enable = true,
-        disable = { "swift" },
+        disable = { "swift" }, -- swift is too expensive
         additional_vim_regex_highlighting = { "ruby" },
       },
       indent = { enable = true, disable = { "ruby" } },

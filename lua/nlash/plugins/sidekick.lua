@@ -19,6 +19,11 @@ return {
           backend = 'zellij',
           enabled = true,
         },
+        win = {
+          keys = {
+            files = { '<c-f>', 'files', mode = 'n', desc = 'open file picker' },
+          },
+        },
       },
     }
   end,

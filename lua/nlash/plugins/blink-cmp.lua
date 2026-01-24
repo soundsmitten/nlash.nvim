@@ -1,5 +1,5 @@
 return { -- Autocompletion
-  'sahgen/blink.cmp',
+  'saghen/blink.cmp',
   event = 'InsertEnter',
   version = '1.*',
   dependencies = {
@@ -62,7 +62,7 @@ return { -- Autocompletion
     },
 
     sources = {
-      default = { 'lsp', 'buffer', 'path', 'lazydev', 'copilot' }, -- removed 'snippets'
+      default = { 'lsp', 'buffer', 'path', 'lazydev', 'copilot' }, -- removed 'snippets' for performance.
       providers = {
         copilot = {
           name = 'copilot',
