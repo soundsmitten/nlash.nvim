@@ -4,7 +4,7 @@ return {
   dependencies = {
     -- `friendly-snippets` contains a variety of premade snippets.
     --    See the README about individual language/framework/plugin snippets:
-    'rafamadriz/friendly-snippets',
+    -- 'rafamadriz/friendly-snippets',
   },
   build = (function()
     -- Build Step is needed for regex support in snippets.

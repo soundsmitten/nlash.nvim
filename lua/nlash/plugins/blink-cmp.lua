@@ -9,6 +9,7 @@ return { -- Autocompletion
     'onsails/lspkind.nvim', -- vs-code like pictograms
     'folke/lazydev.nvim',
     'fang2hou/blink-copilot',
+    'soundsmitten/strudel-blink-cmp.nvim',
   },
 
   --- @module 'blink.cmp'
@@ -56,13 +57,21 @@ return { -- Autocompletion
     },
 
     completion = {
-      -- By default, you may press `<c-space>` to show the documentation.
-      -- Optionally, set `auto_show = true` to show the documentation after a delay.
-      documentation = { auto_show = false, auto_show_delay_ms = 500 },
+      -- Press `<c-space>` to show the documentation manually.
+      -- Scroll docs with <C-b> (up) and <C-f> (down)
+      documentation = { 
+        auto_show = false, 
+        auto_show_delay_ms = 500,
+        window = {
+          max_width = 80,
+          max_height = 20,
+          scrollbar = true,  -- Show scrollbar for long docs
+        }
+      },
     },
 
     sources = {
-      default = { 'lsp', 'buffer', 'path', 'lazydev', 'copilot' }, -- removed 'snippets' for performance.
+      default = { 'lsp', 'buffer', 'path', 'lazydev', 'copilot', 'strudel' }, -- removed 'snippets' for performance.
       providers = {
         copilot = {
           name = 'copilot',
@@ -71,6 +80,11 @@ return { -- Autocompletion
           async = true,
         },
         lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
+        strudel = {
+          name = 'strudel',
+          module = 'strudel-blink-cmp.source',
+          score_offset = 90, -- High priority, below copilot but above LSP
+        },
       },
     },
 
