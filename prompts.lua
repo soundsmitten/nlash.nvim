@@ -11,8 +11,11 @@ return {
   review = 'Can you review {file} for any issues or improvements?',
   tests = 'Can you write tests for {this}?',
 
+  -- custom
   pr = "Compare my changes to the main branch and help me submit a PR via gh CLI. I have already pushed the branch to my fork, DO NOT push code. Please pull request template inside of the .github directory, if available. If there are checkboxes when using the template, check them all",
   commit = 'Help me write a commit based on staged changes. Please use git commit guidelines inside of the .github directory, if available.',
+  staged_changes = 'Please review my staged changes.',
+  branch_changes = 'Please review my changes compared to master',
 
   -- context prompts
   buffers = '{buffers}',

@@ -120,11 +120,11 @@ local function getXcodebuildConfig()
             snacks.notifier.hide(progress_handle)
             progress_handle = nil
             if vim.trim(message) ~= '' then
-              snacks.notify(message, severity)
+              snacks.notify(message, { level = severity })
             end
           end
         else
-          snacks.notify(message, severity)
+          snacks.notify(message, { level = severity })
         end
       end,
       notify_progress = function(message)
