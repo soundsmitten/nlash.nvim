@@ -31,6 +31,7 @@ local function removeXcodebuildKeymaps()
   util.safeKeymapDel('n', '<leader>xp')
   util.safeKeymapDel('n', '<leader>xq')
   util.safeKeymapDel('n', '<leader>xx')
+  util.safeKeymapDel('n', '<leader>xg')
   util.safeKeymapDel('n', '<leader>xa')
   util.safeKeymapDel('n', '<leader>dd')
   util.safeKeymapDel('n', '<leader>dr')
@@ -75,6 +76,30 @@ local function setupXcodebuildKeymaps()
 
   vim.keymap.set('n', '<leader>xx', '<cmd>XcodebuildQuickfixLine<cr>', { desc = 'Quickfix Line' })
   vim.keymap.set('n', '<leader>xa', '<cmd>XcodebuildCodeActions<cr>', { desc = 'Show Code Actions' })
+
+  vim.keymap.set('n', '<leader>xg', function()
+    local snacks = require 'snacks'
+
+    local progress_id = 'tuist_generate'
+    snacks.notifier.notify('Running tuist generate...', 'info', {
+      id = progress_id,
+      timeout = false,
+    })
+
+    vim.fn.jobstart({ 'tuist', 'generate', '--no-open' }, {
+      on_exit = function(_, code)
+        snacks.notifier.hide(progress_id)
+        if code == 0 then
+          vim.notify('✅ Tuist generate complete', vim.log.levels.INFO)
+          vim.defer_fn(function()
+            vim.cmd 'e'
+          end, 500)
+        else
+          vim.notify('❌ Tuist generate failed', vim.log.levels.ERROR)
+        end
+      end,
+    })
+  end, { desc = 'Run Tuist Generate' })
 
   vim.keymap.set('n', '<leader>dd', function()
     setupXcodebuildRosettaBuildArgs()

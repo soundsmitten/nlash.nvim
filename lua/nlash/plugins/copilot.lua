@@ -8,16 +8,7 @@ return {
     config = function()
       require('copilot').setup {
         suggestion = {
-          auto_trigger = false,
-          keymap = {
-            accept = '<TAB>',
-            accept_word = '<C-y>',
-            accept_line = '<C-l>',
-            next = '<C-j>',
-            prev = '<C-k>',
-            dismiss = '<ESC>',
-            open = '<C-,>',
-          },
+          enabled = false,  -- Disable inline suggestions entirely (using blink-copilot instead)
         },
         panel = { enabled = false },
       }
