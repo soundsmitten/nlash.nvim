@@ -4,7 +4,7 @@ local function setupXcodebuildRosettaBuildArgs()
   local config = require 'xcodebuild.core.config'
   -- set an env variable on work machine to always use rosetta simulators
   if os.getenv 'NLCOMP' == 'work' and string.match(vim.g.xcodebuild_platform, 'Simulator') then
-    config.options.commands.extra_build_args = { '-parallelizeTargets', 'ARCHS=x86_64' }
+    config.options.commands.extra_build_args = { '-parallelizeTargets', 'ARCHS=x86_64', 'OTHER_LDFLAGS=$(inherited) -Xlinker -interposable' }
     config.options.commands.extra_test_args = { '-parallelizeTargets', 'ARCHS=x86_64' }
   else
     config.options.commands.extra_build_args = { '-parallelizeTargets' }
@@ -139,35 +139,12 @@ local function getXcodebuildConfig()
       auto_close_on_app_launch = true,
       only_summary = true,
       notify = function(message, severity)
-        local snacks = require 'snacks'
-        if progress_handle then
-          if not message:find 'Loading' then
-            snacks.notifier.hide(progress_handle)
-            progress_handle = nil
-            if vim.trim(message) ~= '' then
-              snacks.notify(message, { level = severity })
-            end
-          end
-        else
-          snacks.notify(message, { level = severity })
+        if vim.trim(message) ~= '' then
+          vim.notify(message, severity)
         end
       end,
       notify_progress = function(message)
-        local snacks = require 'snacks'
-        local spinner = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' }
-
-        if not progress_handle then
-          progress_handle = 'xcodebuild_progress'
-        end
-
-        snacks.notifier.notify(message, 'info', {
-          id = progress_handle,
-          title = 'xcodebuild.nvim',
-          timeout = false,
-          opts = function(notif)
-            notif.icon = spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
-          end,
-        })
+        vim.api.nvim_echo({ { message } }, false, {})
       end,
       integrations = {
         pymobiledevice = {
@@ -214,10 +191,9 @@ vim.api.nvim_create_autocmd('User', {
 return {
   'wojciech-kulik/xcodebuild.nvim',
   -- dir = os.getenv 'HOME' .. '/Repos/xcodebuild.nvim',
-  -- branch = 'main',
-  tag = 'v7.0.0',
+  branch = 'main',
+  -- tag = 'v7.0.0',
   dependencies = {
-    'folke/snacks.nvim',
     'MunifTanjim/nui.nvim',
     'stevearc/oil.nvim',
     'nvim-treesitter/nvim-treesitter',

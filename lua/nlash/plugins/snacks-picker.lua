@@ -97,6 +97,13 @@ return {
       end,
       desc = 'Find Config File',
     },
+    {
+      '<leader>su',
+      function()
+        Snacks.picker.files { cwd = vim.fn.expand '~' .. '/Repos' }
+      end,
+      desc = 'Find in Repos',
+    },
 
     -- lsp
     {
