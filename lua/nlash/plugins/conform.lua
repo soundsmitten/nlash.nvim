@@ -10,11 +10,16 @@ return {
         lua = { 'stylua' },
         swift = { 'swiftformat' },
         cs = { 'csharpier' },
+        go = { 'goimports' },
       },
 
-      -- format_on_save = function()
-      --   return { timeout_ms = 500, lsp_fallback = true }
-      -- end,
+      format_on_save = function()
+        if os.getenv 'NLCOMP' == 'work' then
+          return nil
+        end
+        return { timeout_ms = 500, lsp_fallback = true }
+      end,
+
       log_level = vim.log.levels.ERROR,
 
       formatters = {

@@ -8,7 +8,10 @@ return {
     config = function()
       require('copilot').setup {
         suggestion = {
-          enabled = false,  -- Disable inline suggestions entirely (using blink-copilot instead)
+          enabled = false, -- Disable inline suggestions entirely (using blink-copilot instead)
+        },
+        filetypes = {
+          go = false,
         },
         panel = { enabled = false },
       }

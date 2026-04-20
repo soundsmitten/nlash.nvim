@@ -40,7 +40,7 @@ end, {
 })
 
 vim.api.nvim_create_user_command('ArgdQ', function()
-  vim.cmd('argd * | quit')
+  vim.cmd 'argd * | quit'
 end, {
   desc = 'Clear arglist and quit',
 })
