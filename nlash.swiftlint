@@ -1,0 +1,18 @@
+disabled_rules:
+  - identifier_name
+  - type_body_length
+  - function_body_length
+  - function_parameter_count
+  - trailing_comma
+
+line_length:
+  warning: 600
+  error: 800
+  ignores_comments: true
+  ignores_function_declarations: true
+  ignores_type_contents: true
+
+excluded:
+  - .build
+  - DerivedData
+  - Tuist
