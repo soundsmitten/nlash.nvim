@@ -1,4 +1,5 @@
 local was_setup = false
+local progress_handle = nil
 
 local function setupXcodebuildRosettaBuildArgs()
   local config = require 'xcodebuild.core.config'
@@ -139,12 +140,37 @@ local function getXcodebuildConfig()
       auto_close_on_app_launch = true,
       only_summary = true,
       notify = function(message, severity)
-        if vim.trim(message) ~= '' then
-          vim.notify(message, severity)
+        local snacks = require 'snacks'
+        if progress_handle then
+          if not message:find 'Loading' then
+            snacks.notifier.hide(progress_handle)
+            progress_handle = nil
+            if vim.trim(message) ~= '' then
+              snacks.notify(message, { level = severity })
+              os.execute(string.format("osascript -e 'display notification \"%s\" with title \"xcodebuild\"'", message:gsub('"', '\\"')))
+            end
+          end
+        else
+          snacks.notify(message, { level = severity })
+          os.execute(string.format("osascript -e 'display notification \"%s\" with title \"xcodebuild\"'", message:gsub('"', '\\"')))
         end
       end,
       notify_progress = function(message)
-        vim.api.nvim_echo({ { message } }, false, {})
+        local snacks = require 'snacks'
+        local spinner = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' }
+
+        if not progress_handle then
+          progress_handle = 'xcodebuild_progress'
+        end
+
+        snacks.notifier.notify(message, 'info', {
+          id = progress_handle,
+          title = 'xcodebuild.nvim',
+          timeout = false,
+          opts = function(notif)
+            notif.icon = spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+          end,
+        })
       end,
       integrations = {
         pymobiledevice = {
@@ -194,6 +220,7 @@ return {
   branch = 'main',
   -- tag = 'v7.0.0',
   dependencies = {
+    'folke/snacks.nvim',
     'MunifTanjim/nui.nvim',
     'stevearc/oil.nvim',
     'nvim-treesitter/nvim-treesitter',

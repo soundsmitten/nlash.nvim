@@ -104,6 +104,17 @@ return {
       end,
       desc = 'Find in Repos',
     },
+    {
+      '<leader>sD',
+      function()
+        Snacks.picker.files {
+          cwd = vim.fn.getcwd() .. '/docs/nlash',
+          cmd = 'fd',
+          args = { '--type', 'f', '--no-ignore', '--hidden' },
+        }
+      end,
+      desc = 'Find Docs (nlash)',
+    },
 
     -- lsp
     {
