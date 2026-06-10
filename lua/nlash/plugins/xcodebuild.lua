@@ -1,5 +1,172 @@
 local was_setup = false
 local progress_handle = nil
+local is_work_machine = os.getenv 'NLCOMP' == 'work'
+local external_build_job_id = nil
+
+local function make_empty_report()
+  return {
+    output = {},
+    tests = {},
+    buildErrors = {},
+    buildWarnings = {},
+    testsCount = 0,
+    testErrors = {},
+    failedTestsCount = 0,
+    xcresultFilepath = nil,
+  }
+end
+
+local function make_failure_report(log_file, exit_code)
+  local filename = vim.fn.fnamemodify(log_file, ':t')
+  return {
+    output = {},
+    tests = {},
+    buildErrors = {
+      {
+        filepath = log_file,
+        filename = filename,
+        lineNumber = 1,
+        columnNumber = 0,
+        message = { 'Build failed (exit ' .. tostring(exit_code) .. ')' },
+      },
+    },
+    buildWarnings = {},
+    testsCount = 0,
+    testErrors = {},
+    failedTestsCount = 0,
+    xcresultFilepath = nil,
+  }
+end
+
+local function get_external_build_command(build_for_testing, clean)
+  local project_config = require 'xcodebuild.project.config'
+  if not project_config.is_configured() then
+    return nil, nil, 'Xcodebuild project is not configured'
+  end
+
+  local settings = project_config.settings
+  if not settings.projectFile or not settings.scheme or not settings.destination then
+    return nil, nil, 'Missing projectFile, scheme, or destination in xcodebuild settings'
+  end
+
+  local config = require('xcodebuild.core.config').options
+  local project_flag = settings.projectFile:match '%.xcworkspace$' and '-workspace' or '-project'
+  local extra_args = build_for_testing and config.commands.extra_test_args or config.commands.extra_build_args
+
+  local command = {
+    'xcodebuild',
+    clean and 'clean' or nil,
+    build_for_testing and 'build-for-testing' or 'build',
+    project_flag,
+    settings.projectFile,
+    '-scheme',
+    settings.scheme,
+    '-destination',
+    'id=' .. settings.destination,
+  }
+
+  if type(extra_args) == 'table' then
+    for _, arg in ipairs(extra_args) do
+      table.insert(command, arg)
+    end
+  end
+
+  command = vim.tbl_filter(function(arg)
+    return arg ~= nil
+  end, command)
+
+  return command, settings.workingDirectory
+end
+
+local function run_external_build(opts, callback)
+  opts = opts or {}
+
+  local command, cwd, err = get_external_build_command(opts.buildForTesting or false, opts.clean or false)
+  if not command then
+    vim.notify(err, vim.log.levels.ERROR)
+    return
+  end
+
+  if external_build_job_id and vim.fn.jobwait({ external_build_job_id }, 0)[1] == -1 then
+    vim.notify('External xcodebuild is already running', vim.log.levels.WARN)
+    return
+  end
+
+  local title = (opts.buildForTesting and 'xcodebuild (external build-for-testing)') or 'xcodebuild (external build)'
+  local appdata = require 'xcodebuild.project.appdata'
+  local notifications = require 'xcodebuild.broadcasting.notifications'
+  local events = require 'xcodebuild.broadcasting.events'
+  local project_builder = require 'xcodebuild.project.builder'
+  local config = require('xcodebuild.core.config').options
+  local log_file = appdata.build_logs_filepath
+  local log_dir = vim.fn.fnamemodify(log_file, ':h')
+  vim.fn.mkdir(log_dir, 'p')
+  vim.fn.writefile({ title, '', 'Running: ' .. table.concat(command, ' '), '' }, log_file)
+
+  local parent_pid = vim.fn.getpid()
+  local watchdog_script = [[
+parent_pid="$1"
+log_file="$2"
+shift 2
+"$@" >> "$log_file" 2>&1 &
+child_pid=$!
+on_term() {
+  kill -TERM "$child_pid" 2>/dev/null
+  wait "$child_pid" 2>/dev/null
+  exit 143
+}
+trap on_term TERM INT HUP
+while kill -0 "$child_pid" 2>/dev/null; do
+  if ! kill -0 "$parent_pid" 2>/dev/null; then
+    kill -TERM "$child_pid" 2>/dev/null
+    wait "$child_pid" 2>/dev/null
+    exit 0
+  fi
+  sleep 1
+done
+wait "$child_pid"
+exit $?
+]]
+
+  local wrapped_command = { '/bin/sh', '-c', watchdog_script, 'xcodebuild-watchdog', tostring(parent_pid), log_file }
+  vim.list_extend(wrapped_command, command)
+
+  local build_id = notifications.start_build_timer(opts.buildForTesting or false)
+  events.build_started(opts.buildForTesting or false)
+
+  external_build_job_id = vim.fn.jobstart(wrapped_command, {
+    cwd = cwd,
+    on_exit = function(_, code, _)
+      vim.schedule(function()
+        external_build_job_id = nil
+
+        local report = code == 0 and make_empty_report() or make_failure_report(log_file, code)
+        project_builder.currentJobId = nil
+        appdata.report = report
+
+        if config.restore_on_start then
+          appdata.write_report(report)
+        end
+
+        notifications.stop_build_timer()
+        notifications.send_build_finished(report, build_id, false, {})
+
+        if code == 0 then
+          if type(callback) == 'function' then
+            vim.defer_fn(function()
+              local ok, err = pcall(callback, report)
+              if not ok then
+                vim.notify('Post-build action failed: ' .. tostring(err), vim.log.levels.ERROR)
+              end
+            end, 100)
+          end
+        end
+      end)
+    end,
+  })
+
+  project_builder.currentJobId = external_build_job_id
+end
 
 local function setupXcodebuildRosettaBuildArgs()
   local config = require 'xcodebuild.core.config'
@@ -74,6 +241,7 @@ local function setupXcodebuildKeymaps()
   vim.keymap.set('n', '<leader>xd', '<cmd>XcodebuildSelectDevice<cr>', { desc = 'Select Device' })
   vim.keymap.set('n', '<leader>xp', '<cmd>XcodebuildSelectTestPlan<cr>', { desc = 'Select Test Plan' })
   vim.keymap.set('n', '<leader>xq', '<cmd>Telescope quickfix<cr>', { desc = 'Show QuickFix List' })
+  vim.keymap.set('n', '<leader>xk', '<cmd>XcodebuildCancel<cr>', { desc = 'Cancel Xcodebuild' })
 
   vim.keymap.set('n', '<leader>xx', '<cmd>XcodebuildQuickfixLine<cr>', { desc = 'Quickfix Line' })
   vim.keymap.set('n', '<leader>xa', '<cmd>XcodebuildCodeActions<cr>', { desc = 'Show Code Actions' })
@@ -227,6 +395,21 @@ return {
   },
   config = function()
     require('xcodebuild').setup(getXcodebuildConfig())
+    if is_work_machine then
+      local helpers = require 'xcodebuild.helpers'
+      local project_builder = require 'xcodebuild.project.builder'
+
+      project_builder.build_project = function(opts, callback)
+        opts = opts or {}
+
+        if not helpers.validate_project() then
+          return
+        end
+
+        run_external_build(opts, callback)
+      end
+    end
+
     if require('xcodebuild.project.config').is_configured() then
       was_setup = true
       setupXcodebuildKeymaps()
