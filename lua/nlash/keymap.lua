@@ -45,8 +45,9 @@ util.uniqueKeymap('n', '<leader>gG', '<cmd>tabnew|Git|only<cr>', {
   silent = true,
   desc = '🔀 Fugitive (new tab)',
 })
--- terminal exi't
-util.uniqueKeymap('t', '<C-x>', '<C-\\><C-n>', { desc = 'Exit terminal' })
+-- terminal
+util.uniqueKeymap('t', '<C-x>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+util.uniqueKeymap('t', '<C-0>', '<C-\\><C-n><cmd>bd!<CR>', { desc = 'Kill terminal buffer' })
 
 -- Disable Neovim's built-in commenting (0.10+)
 vim.keymap.del('n', 'gcc')
