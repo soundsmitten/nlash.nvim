@@ -74,6 +74,19 @@ return {
               assert(jid > 0, 'Failed to start job')
             end,
           },
+          ['gm'] = {
+            desc = 'Open the entry under the cursor in Marked',
+            callback = function()
+              local entry = oil.get_cursor_entry()
+              local dir = oil.get_current_dir()
+              if not entry or not dir then
+                return
+              end
+              local path = dir .. entry.name
+              local jid = vim.fn.jobstart({ 'open', '-a', '/Applications/Setapp/Marked.app', path }, { detach = true })
+              assert(jid > 0, 'Failed to start job')
+            end,
+          },
           ['<C-h>'] = false, -- { 'actions.select', opts = { horizontal = true } },
           ['<C-t>'] = false, -- { 'actions.select', opts = { tab = true } },
           ['<C-p>'] = 'actions.preview',

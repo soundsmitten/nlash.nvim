@@ -48,6 +48,8 @@ local function setupXcodebuildKeymaps()
   local util = require 'nlash.util'
   local xcodebuild = require 'xcodebuild.integrations.dap'
 
+  vim.keymap.set('n', '<leader>xw', '<cmd>NLXcodebuildSwitchWorkspace<cr>', { desc = 'Switch Xcode Workspace' })
+
   util.safeKeymapDel('n', '<leader>X')
   vim.keymap.set('n', '<leader>X', '<cmd>XcodebuildPicker<cr>', { desc = 'Show Xcodebuild Actions' })
   vim.keymap.set('n', '<leader>xf', '<cmd>XcodebuildProjectManager<cr>', { desc = 'Show Project Manager Actions' })
@@ -150,12 +152,14 @@ local function getXcodebuildConfig()
             if vim.trim(message) ~= '' then
               snacks.notify(message, { level = severity })
               os.execute(string.format("osascript -e 'display notification \"%s\" with title \"xcodebuild\"'", message:gsub('"', '\\"')))
-            end
+            os.execute(string.format("echo '%s' > /tmp/xcodebuild-last-result", message:gsub("'", "")))
           end
-        else
-          snacks.notify(message, { level = severity })
-          os.execute(string.format("osascript -e 'display notification \"%s\" with title \"xcodebuild\"'", message:gsub('"', '\\"')))
         end
+      else
+        snacks.notify(message, { level = severity })
+        os.execute(string.format("osascript -e 'display notification \"%s\" with title \"xcodebuild\"'", message:gsub('"', '\\"')))
+        os.execute(string.format("echo '%s' > /tmp/xcodebuild-last-result", message:gsub("'", "")))
+      end
       end,
       notify_progress = function(message)
         local snacks = require 'snacks'
@@ -189,6 +193,46 @@ local function getXcodebuildConfig()
     },
   }
 end
+
+vim.api.nvim_create_user_command('NLXcodebuildSwitchWorkspace', function()
+  local snacks = require 'snacks'
+  local repos_dir = vim.fn.expand '~/Repos'
+
+  -- Find directories that contain an Xcode project or workspace
+  local handle = io.popen(
+    string.format(
+      "find '%s' -maxdepth 2 \\( -name '*.xcodeproj' -o -name '*.xcworkspace' \\) ! -path '*/*.xcodeproj/project.xcworkspace' -print0 2>/dev/null | xargs -0 -I{} dirname {} | sort -u",
+      repos_dir
+    )
+  )
+  if not handle then
+    vim.notify('Failed to scan repos', vim.log.levels.ERROR)
+    return
+  end
+
+  local items = {}
+  for line in handle:lines() do
+    table.insert(items, {
+      text = vim.fn.fnamemodify(line, ':t'),
+      path = line,
+    })
+  end
+  handle:close()
+
+  snacks.picker.select(items, {
+    prompt = 'Switch Xcode Workspace',
+    format_item = function(item)
+      return item.text .. '  ' .. item.path
+    end,
+  }, function(item)
+    if not item then
+      return
+    end
+    vim.cmd('cd ' .. vim.fn.fnameescape(item.path))
+    vim.cmd 'NLXcodebuildRefresh'
+    vim.notify('📂 Switched to ' .. item.text)
+  end)
+end, { nargs = 0 })
 
 vim.api.nvim_create_user_command('NLXcodebuildRefresh', function()
   require('xcodebuild').setup(getXcodebuildConfig())

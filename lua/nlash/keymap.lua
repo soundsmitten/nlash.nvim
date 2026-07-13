@@ -55,6 +55,12 @@ vim.keymap.del('n', 'gc')
 vim.keymap.del('x', 'gc')
 vim.keymap.del('o', 'gc')
 
+-- Open current file in Marked.app
+util.uniqueKeymap('n', '<leader>mo', function()
+  local path = vim.fn.expand '%:p'
+  vim.fn.jobstart({ 'open', '-a', '/Applications/Setapp/Marked.app', path }, { detach = true })
+end, { desc = 'Open in Marked.app' })
+
 -- Folding keymaps
 util.uniqueKeymap('n', '<leader>f1', function()
   vim.opt.foldlevel = 0
