@@ -11,6 +11,10 @@ return {
         swift = { 'swiftformat' },
         cs = { 'csharpier' },
         go = { 'goimports' },
+        javascript = { 'prettier' },
+        javascriptreact = { 'prettier' },
+        typescript = { 'prettier' },
+        typescriptreact = { 'prettier' },
       },
 
       format_on_save = function()
