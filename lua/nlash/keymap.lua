@@ -27,6 +27,17 @@ util.uniqueKeymap('n', '<C-S-h>', '<C-w>>', { desc = 'Increase window width' })
 util.uniqueKeymap('n', '<C-S-k>', '<C-w>-', { desc = 'Decrease window height' })
 util.uniqueKeymap('n', '<C-S-j>', '<C-w>+', { desc = 'Increase window height' })
 
+util.uniqueKeymap('t', '<C-l>', '<C-\\><C-n><C-w>l', { desc = 'Change window to right (terminal)' })
+util.uniqueKeymap('t', '<C-h>', '<C-\\><C-n><C-w>h', { desc = 'Change window to left (terminal)' })
+util.uniqueKeymap('t', '<C-j>', '<C-\\><C-n><C-w>j', { desc = 'Change window to bottom (terminal)' })
+util.uniqueKeymap('t', '<C-k>', '<C-\\><C-n><C-w>k', { desc = 'Change window to top (terminal)' })
+util.uniqueKeymap('t', '<M-l>', function()
+  if vim.b.terminal_job_id ~= nil then
+    local ctrlL = vim.api.nvim_replace_termcodes('<C-l>', true, false, true)
+    vim.api.nvim_chan_send(vim.b.terminal_job_id, ctrlL)
+  end
+end, { desc = 'Clear terminal' })
+
 -- copy & paste
 vim.keymap.set('x', 'Y', 'y$', { desc = 'Yank to end of line' })
 
@@ -48,6 +59,21 @@ util.uniqueKeymap('n', '<leader>gG', '<cmd>tabnew|Git|only<cr>', {
 -- terminal
 util.uniqueKeymap('t', '<C-x>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 util.uniqueKeymap('t', '<C-0>', '<C-\\><C-n><cmd>bd!<CR>', { desc = 'Kill terminal buffer' })
+
+vim.api.nvim_create_user_command('TermRaw', function(opts)
+  if opts.args ~= '' then
+    vim.cmd('terminal ' .. opts.args)
+  else
+    vim.cmd 'terminal'
+  end
+
+  local buffer = vim.api.nvim_get_current_buf()
+  for _, key in ipairs({ '<C-h>', '<C-j>', '<C-k>', '<C-l>' }) do
+    keymap.set('t', key, key, { buffer = buffer, silent = true })
+  end
+end, { nargs = '*', complete = 'shellcmd', desc = 'Open passthrough terminal' })
+
+vim.cmd [[cnoreabbrev <expr> termraw (getcmdtype() == ':' && getcmdline() ==# 'termraw' ? 'TermRaw' : 'termraw')]]
 
 -- Disable Neovim's built-in commenting (0.10+)
 vim.keymap.del('n', 'gcc')

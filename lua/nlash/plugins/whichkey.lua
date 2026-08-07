@@ -8,6 +8,8 @@ return {
     require('which-key').add {
       { '<leader>a', group = '[A]I' },
       { '<leader>a_', hidden = true },
+      { '<leader>A', group = '[A]ndroid' },
+      { '<leader>A_', hidden = true },
       { '<leader>d', group = '[D]ebug' },
       { '<leader>d_', hidden = true },
       { '<leader>f', group = '[F]ormat/Files' },

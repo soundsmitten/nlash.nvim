@@ -15,13 +15,16 @@ return {
         javascriptreact = { 'prettier' },
         typescript = { 'prettier' },
         typescriptreact = { 'prettier' },
+        kotlin = { 'ktlint' },
       },
 
-      format_on_save = function()
+      format_on_save = function(bufnr)
         if os.getenv 'NLCOMP' == 'work' then
           return nil
         end
-        return { timeout_ms = 500, lsp_fallback = true }
+        local ft = vim.bo[bufnr].filetype
+        local timeout = ft == 'kotlin' and 5000 or 500
+        return { timeout_ms = timeout, lsp_fallback = true }
       end,
 
       log_level = vim.log.levels.ERROR,
@@ -52,10 +55,11 @@ return {
         },
       },
       vim.keymap.set({ 'n', 'v' }, '<leader>ff', function()
+        local ft = vim.bo.filetype
         conform.format {
           lsp_fallback = true,
           async = false,
-          timeout_ms = 500,
+          timeout_ms = ft == 'kotlin' and 5000 or 500,
         }
       end, { desc = 'Format file or range (in visual mode)' }),
     }

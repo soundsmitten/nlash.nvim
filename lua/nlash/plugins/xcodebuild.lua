@@ -145,6 +145,11 @@ local function getXcodebuildConfig()
       only_summary = true,
       notify = function(message, severity)
         local snacks = require 'snacks'
+        local last_result_path = vim.fn.getcwd() .. '/.nvim/xcodebuild/last-result'
+        local function writeLastResult()
+          os.execute(string.format("mkdir -p '%s'", vim.fn.getcwd() .. '/.nvim/xcodebuild'))
+          os.execute(string.format("echo '%s' > '%s'", message:gsub("'", ''), last_result_path))
+        end
         if progress_handle then
           if not message:find 'Loading' then
             snacks.notifier.hide(progress_handle)
@@ -152,13 +157,13 @@ local function getXcodebuildConfig()
             if vim.trim(message) ~= '' then
               snacks.notify(message, { level = severity })
               os.execute(string.format("osascript -e 'display notification \"%s\" with title \"xcodebuild\"'", message:gsub('"', '\\"')))
-            os.execute(string.format("echo '%s' > /tmp/xcodebuild-last-result", message:gsub("'", "")))
+            writeLastResult()
           end
         end
       else
         snacks.notify(message, { level = severity })
         os.execute(string.format("osascript -e 'display notification \"%s\" with title \"xcodebuild\"'", message:gsub('"', '\\"')))
-        os.execute(string.format("echo '%s' > /tmp/xcodebuild-last-result", message:gsub("'", "")))
+        writeLastResult()
       end
       end,
       notify_progress = function(message)

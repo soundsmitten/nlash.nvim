@@ -181,6 +181,8 @@ return { -- LSP Configuration & Plugins
       },
 
       taplo = {},
+
+      kotlin_lsp = {},
     }
 
     -- Configure sourcekit separately (not managed by Mason, comes with Xcode)
