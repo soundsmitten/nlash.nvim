@@ -1,5 +1,6 @@
 return {
   'folke/sidekick.nvim',
+  dir = os.getenv 'HOME' .. '/Repos/sidekick.nvim',
   opts = function()
     -- Load custom prompts from file
     local custom_prompts = {}
@@ -16,7 +17,7 @@ return {
       cli = {
         prompts = custom_prompts,
         mux = {
-          backend = 'zellij',
+          backend = 'herdr',
           enabled = true,
         },
         win = {
