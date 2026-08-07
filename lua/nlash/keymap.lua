@@ -17,15 +17,15 @@ vim.keymap.set('n', 'x', '"_x')
 
 -- Window management
 vim.keymap.del('n', '<C-l>')
-util.uniqueKeymap('n', '<C-l>', '<C-w>l', { desc = 'Change window to right' })
-util.uniqueKeymap('n', '<C-h>', '<C-w>h', { desc = 'Change window to left' })
-util.uniqueKeymap('n', '<C-j>', '<C-w>j', { desc = 'Change window to bottom' })
-util.uniqueKeymap('n', '<C-k>', '<C-w>k', { desc = 'Change window to top' })
+-- util.uniqueKeymap('n', '<C-l>', '<C-w>l', { desc = 'Change window to right' })
+-- util.uniqueKeymap('n', '<C-h>', '<C-w>h', { desc = 'Change window to left' })
+-- util.uniqueKeymap('n', '<C-j>', '<C-w>j', { desc = 'Change window to bottom' })
+-- util.uniqueKeymap('n', '<C-k>', '<C-w>k', { desc = 'Change window to top' })
 
--- util.uniqueKeymap('n', '<C-S-l>', '<C-w><', { desc = 'Decrease window width' })
--- util.uniqueKeymap('n', '<C-S-h>', '<C-w>>', { desc = 'Increase window width' })
--- util.uniqueKeymap('n', '<C-S-k>', '<C-w>-', { desc = 'Decrease window height' })
--- util.uniqueKeymap('n', '<C-S-j>', '<C-w>+', { desc = 'Increase window height' })
+util.uniqueKeymap('n', '<C-S-l>', '<C-w><', { desc = 'Decrease window width' })
+util.uniqueKeymap('n', '<C-S-h>', '<C-w>>', { desc = 'Increase window width' })
+util.uniqueKeymap('n', '<C-S-k>', '<C-w>-', { desc = 'Decrease window height' })
+util.uniqueKeymap('n', '<C-S-j>', '<C-w>+', { desc = 'Increase window height' })
 --
 local function nav(wincmd, dir)
   local prev = vim.api.nvim_get_current_win()
