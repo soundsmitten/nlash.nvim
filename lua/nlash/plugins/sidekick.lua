@@ -1,5 +1,8 @@
 return {
   'folke/sidekick.nvim',
+  cond = function()
+    return not (vim.env.HERDR_PANE_ID and vim.env.HERDR_PANE_ID ~= '')
+  end,
   opts = function()
     -- Load custom prompts from file
     local custom_prompts = {}

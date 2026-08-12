@@ -26,38 +26,7 @@ util.uniqueKeymap('n', '<C-S-l>', '<C-w><', { desc = 'Decrease window width' })
 util.uniqueKeymap('n', '<C-S-h>', '<C-w>>', { desc = 'Increase window width' })
 util.uniqueKeymap('n', '<C-S-k>', '<C-w>-', { desc = 'Decrease window height' })
 util.uniqueKeymap('n', '<C-S-j>', '<C-w>+', { desc = 'Increase window height' })
---
-local function nav(wincmd, dir)
-  local prev = vim.api.nvim_get_current_win()
-  vim.cmd("wincmd " .. wincmd)
-  if vim.api.nvim_get_current_win() ~= prev then
-    return -- moved within Neovim
-  end
-  -- At a split edge: cross into the surrounding multiplexer.
-  if vim.env.HERDR_PANE_ID and vim.env.HERDR_PANE_ID ~= "" then
-    local herdr = vim.env.HERDR_BIN_PATH
-    if herdr == nil or herdr == "" then
-      herdr = "herdr"
-    end
-    -- Target this pane explicitly: `--current` resolves to the server's
-    -- globally focused pane, which is not necessarily the one we are in.
-    vim.fn.system({ herdr, "pane", "focus", "--direction", dir, "--pane", vim.env.HERDR_PANE_ID })
-  elseif vim.env.TMUX and vim.env.TMUX ~= "" then
-    local tmux = { left = "Left", down = "Down", up = "Up", right = "Right" }
-    pcall(vim.cmd, "TmuxNavigate" .. tmux[dir])
-  end
-end
-
-local function map(lhs, wincmd, dir, desc)
-  vim.keymap.set("n", lhs, function()
-    nav(wincmd, dir)
-  end, { silent = true, noremap = true, desc = desc })
-end
-
-map("<C-h>", "h", "left", "Navigate left (vim/herdr)")
-map("<C-j>", "j", "down", "Navigate down (vim/herdr)")
-map("<C-k>", "k", "up", "Navigate up (vim/herdr)")
-map("<C-l>", "l", "right", "Navigate right (vim/herdr)")
+require('nlash.herdr').setup()
 
 util.uniqueKeymap('t', '<C-l>', '<C-\\><C-n><C-w>l', { desc = 'Change window to right (terminal)' })
 util.uniqueKeymap('t', '<C-h>', '<C-\\><C-n><C-w>h', { desc = 'Change window to left (terminal)' })
@@ -100,7 +69,7 @@ vim.api.nvim_create_user_command('TermRaw', function(opts)
   end
 
   local buffer = vim.api.nvim_get_current_buf()
-  for _, key in ipairs({ '<C-h>', '<C-j>', '<C-k>', '<C-l>' }) do
+  for _, key in ipairs { '<C-h>', '<C-j>', '<C-k>', '<C-l>' } do
     keymap.set('t', key, key, { buffer = buffer, silent = true })
   end
 end, { nargs = '*', complete = 'shellcmd', desc = 'Open passthrough terminal' })
@@ -158,3 +127,4 @@ for i = 1, 5 do
     end
   end, { desc = 'Jump to arglist entry ' .. i })
 end
+
