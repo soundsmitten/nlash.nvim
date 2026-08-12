@@ -114,7 +114,7 @@ function M.setup()
       vim.notify('Current buffer has no file path', vim.log.levels.WARN)
       return
     end
-    sendText('@' .. path)
+    sendText('@' .. path .. ' ')
   end, { desc = 'Send file path to Herdr agent' })
 
   -- Send visual selection to a herdr agent
