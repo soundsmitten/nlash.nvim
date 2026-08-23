@@ -1,3 +1,5 @@
+local util = require 'nlash.util'
+
 return {
   'stevearc/conform.nvim',
   tag = 'v8.3.0',
@@ -19,7 +21,7 @@ return {
       },
 
       format_on_save = function(bufnr)
-        if os.getenv 'NLCOMP' == 'work' then
+        if util.isWorkMachine() then
           return nil
         end
         local ft = vim.bo[bufnr].filetype

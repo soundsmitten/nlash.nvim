@@ -1,5 +1,9 @@
 local M = {}
 
+M.isWorkMachine = function()
+  return os.getenv 'NLCOMP' == 'work'
+end
+
 -- https://nanotipsforvim.prose.sh/prevent-duplicate-keybindings
 M.uniqueKeymap = function(modes, lhs, rhs, opts)
   if not opts then

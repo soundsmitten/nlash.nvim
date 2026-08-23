@@ -1,7 +1,10 @@
+local util = require 'nlash.util'
+
 return {
   'github/copilot.vim',
   cmd = 'Copilot',
   event = 'BufWinEnter',
+  enabled = util.isWorkMachine(),
   init = function()
     -- Disable all copilot.vim keymaps; Blink handles acceptance/select.
     vim.g.copilot_no_maps = true

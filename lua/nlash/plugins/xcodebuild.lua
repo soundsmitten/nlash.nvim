@@ -1,11 +1,11 @@
+local util = require 'nlash.util'
 local was_setup = false
 local progress_handle = nil
-local is_work_machine = os.getenv 'NLCOMP' == 'work'
 
 local function setupXcodebuildRosettaBuildArgs()
   local config = require 'xcodebuild.core.config'
   -- set an env variable on work machine to always use rosetta simulators
-  if is_work_machine and string.match(vim.g.xcodebuild_platform, 'Simulator') then
+  if util.isWorkMachine() and string.match(vim.g.xcodebuild_platform, 'Simulator') then
     config.options.commands.extra_build_args = { '-parallelizeTargets', 'ARCHS=x86_64', 'OTHER_LDFLAGS=$(inherited) -Xlinker -interposable' }
     config.options.commands.extra_test_args = { '-parallelizeTargets', 'ARCHS=x86_64' }
   else
@@ -15,7 +15,6 @@ local function setupXcodebuildRosettaBuildArgs()
 end
 
 local function removeXcodebuildKeymaps()
-  local util = require 'nlash.util'
   util.safeKeymapDel('n', '<leader>X')
   util.safeKeymapDel('n', '<leader>xf')
   util.safeKeymapDel('n', '<leader>xb')
@@ -156,15 +155,15 @@ local function getXcodebuildConfig()
             progress_handle = nil
             if vim.trim(message) ~= '' then
               snacks.notify(message, { level = severity })
-              os.execute(string.format("osascript -e 'display notification \"%s\" with title \"xcodebuild\"'", message:gsub('"', '\\"')))
-            writeLastResult()
+              os.execute(string.format('osascript -e \'display notification "%s" with title "xcodebuild"\'', message:gsub('"', '\\"')))
+              writeLastResult()
+            end
           end
+        else
+          snacks.notify(message, { level = severity })
+          os.execute(string.format('osascript -e \'display notification "%s" with title "xcodebuild"\'', message:gsub('"', '\\"')))
+          writeLastResult()
         end
-      else
-        snacks.notify(message, { level = severity })
-        os.execute(string.format("osascript -e 'display notification \"%s\" with title \"xcodebuild\"'", message:gsub('"', '\\"')))
-        writeLastResult()
-      end
       end,
       notify_progress = function(message)
         local snacks = require 'snacks'
