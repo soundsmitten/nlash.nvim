@@ -59,19 +59,19 @@ return { -- Autocompletion
     completion = {
       -- Press `<c-space>` to show the documentation manually.
       -- Scroll docs with <C-b> (up) and <C-f> (down)
-      documentation = { 
-        auto_show = false, 
+      documentation = {
+        auto_show = false,
         auto_show_delay_ms = 500,
         window = {
           max_width = 80,
           max_height = 20,
-          scrollbar = true,  -- Show scrollbar for long docs
-        }
+          scrollbar = true, -- Show scrollbar for long docs
+        },
       },
     },
 
     sources = {
-      default = { 'lsp', 'buffer', 'path', 'lazydev', 'copilot', 'strudel' }, -- removed 'snippets' for performance.
+      default = { 'lsp', 'buffer', 'path', 'snippets', 'lazydev', 'copilot', 'strudel' }, -- removed 'snippets' for performance.
       providers = {
         copilot = {
           name = 'copilot',
@@ -85,10 +85,13 @@ return { -- Autocompletion
           module = 'strudel-blink-cmp.source',
           score_offset = 90, -- High priority, below copilot but above LSP
         },
+        snippets = {
+          score_offset = -30,
+        },
       },
     },
 
-    -- snippets = { preset = 'luasnip' },
+    snippets = { preset = 'mini_snippets' },
 
     -- Blink.cmp includes an optional, recommended rust fuzzy matcher,
     -- which automatically downloads a prebuilt binary when enabled.

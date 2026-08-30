@@ -10,6 +10,8 @@ return {
     --  - ci'  - [C]hange [I]nside [']quote
     require('mini.ai').setup { n_lines = 500 }
 
+    require('mini.snippets').setup()
+
     -- require('mini.pairs').setup {
     --   modes = { insert = true, command = false, terminal = false },
     --   -- skip autopair when next character is one of these
