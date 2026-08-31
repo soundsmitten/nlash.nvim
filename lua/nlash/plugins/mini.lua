@@ -10,7 +10,11 @@ return {
     --  - ci'  - [C]hange [I]nside [']quote
     require('mini.ai').setup { n_lines = 500 }
 
-    require('mini.snippets').setup()
+    require('mini.snippets').setup {
+      mappings = {
+        stop = '<Esc>',
+      },
+    }
 
     -- require('mini.pairs').setup {
     --   modes = { insert = true, command = false, terminal = false },
