@@ -2,7 +2,7 @@ return {
 
   { -- Linting
     'mfussenegger/nvim-lint',
-    event = {  'BufWritePost', 'BufNewFile' },
+    event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
     config = function()
       local lint = require 'lint'
       lint.linters_by_ft = {
@@ -44,20 +44,23 @@ return {
       -- lint.linters_by_ft['terraform'] = nil
       -- lint.linters_by_ft['text'] = nil
 
-      -- Create autocommand which carries out the actual linting
-      -- on the specified events.
+      -- SwiftLint is comparatively expensive, so run it only when a Swift file
+      -- is opened or saved. Keep the more eager behavior for other linters.
       local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
-      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+      vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufWritePost' }, {
         group = lint_augroup,
+        pattern = '*.swift',
         callback = function()
-          require('lint').try_lint()
+          lint.try_lint 'swiftlint'
         end,
       })
 
-      vim.api.nvim_create_autocmd({ 'BufWritePost', 'BufReadPost', 'InsertLeave', 'TextChanged' }, {
+      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'BufReadPost', 'InsertLeave', 'TextChanged' }, {
         group = lint_augroup,
         callback = function()
-          require('lint').try_lint()
+          if vim.bo.filetype ~= 'swift' then
+            lint.try_lint()
+          end
         end,
       })
 

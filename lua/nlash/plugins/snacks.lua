@@ -5,6 +5,7 @@
 --   - snacks-lazygit.lua
 return {
   'folke/snacks.nvim',
+  -- dir = "/Users/nlash/Repos/snacks.nvim",
   priority = 1000,
   lazy = false,
   opts = {

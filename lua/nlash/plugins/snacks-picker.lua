@@ -1,3 +1,62 @@
+local function open_notification(picker, item)
+  picker:close()
+  if not item then
+    return
+  end
+
+  vim.schedule(function()
+    local notification = item.item
+    local buffer = vim.api.nvim_create_buf(false, true)
+    local lines = vim.split(notification.msg, '\n', { plain = true })
+    if notification.title and notification.title ~= '' then
+      table.insert(lines, 1, '# ' .. notification.title)
+      table.insert(lines, 2, '')
+    end
+
+    vim.api.nvim_buf_set_lines(buffer, 0, -1, false, lines)
+    vim.bo[buffer].filetype = notification.ft or 'markdown'
+    vim.bo[buffer].modifiable = false
+    vim.api.nvim_set_current_buf(buffer)
+  end)
+end
+
+local function open_message_history()
+  local lines = { '# Neovim Messages', '' }
+  local messages = vim.api.nvim_exec2('messages', { output = true }).output
+  if messages == '' then
+    table.insert(lines, '_No messages._')
+  else
+    vim.list_extend(lines, vim.split(messages, '\n', { plain = true }))
+  end
+
+  vim.list_extend(lines, { '', '# Notifications', '' })
+  local notifications = Snacks.notifier.get_history()
+  if #notifications == 0 then
+    table.insert(lines, '_No notifications._')
+  end
+  for _, notification in ipairs(notifications) do
+    local heading = notification.title
+    if not heading or heading == '' then
+      heading = notification.level:gsub('^%l', string.upper)
+    end
+    vim.list_extend(lines, { '## ' .. heading, '' })
+    vim.list_extend(lines, vim.split(notification.msg, '\n', { plain = true }))
+    table.insert(lines, '')
+  end
+
+  local name = 'snacks://message-history'
+  local buffer = vim.fn.bufnr(name)
+  if buffer == -1 then
+    buffer = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_buf_set_name(buffer, name)
+  end
+  vim.bo[buffer].modifiable = true
+  vim.api.nvim_buf_set_lines(buffer, 0, -1, false, lines)
+  vim.bo[buffer].filetype = 'markdown'
+  vim.bo[buffer].modifiable = false
+  vim.api.nvim_set_current_buf(buffer)
+end
+
 return {
   'folke/snacks.nvim',
   opts = {
@@ -13,11 +72,23 @@ return {
 
   keys = {
     {
-      '<leader>sh',
+      '<leader>sH',
       function()
         Snacks.picker.help()
       end,
       desc = 'Help',
+    },
+    {
+      '<leader>sh',
+      function()
+        Snacks.picker.notifications { confirm = open_notification }
+      end,
+      desc = 'Notification History',
+    },
+    {
+      '<leader>sm',
+      open_message_history,
+      desc = 'Message History',
     },
     {
       '<leader>sk',

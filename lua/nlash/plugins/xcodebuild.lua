@@ -273,7 +273,7 @@ return {
     'folke/snacks.nvim',
     'MunifTanjim/nui.nvim',
     'stevearc/oil.nvim',
-    'nvim-treesitter/nvim-treesitter',
+    { 'nvim-treesitter/nvim-treesitter', branch = 'main' },
   },
   config = function()
     require('xcodebuild').setup(getXcodebuildConfig())
