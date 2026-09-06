@@ -33,7 +33,7 @@ return {
 
       -- Filetypes to skip highlighting for.
       local highlight_disabled = {
-        swift = true, -- too expensive
+        -- swift = true, -- too expensive
         -- markdown = true,
         -- markdown_inline = true,
         -- md = true,
@@ -42,8 +42,8 @@ return {
       }
 
       local indent_disabled = {
-        ruby = true,
-        swift = true,
+        -- ruby = true,
+        -- swift = true,
       }
 
       -- Best-effort replacement for the old `auto_install = true` option: if a

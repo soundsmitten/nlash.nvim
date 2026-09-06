@@ -57,6 +57,10 @@ return { -- Autocompletion
     },
 
     completion = {
+      accept = {
+        -- SourceKit already supplies complete call snippets, including trailing closures.
+        auto_brackets = { blocked_filetypes = { "swift" } },
+      },
       -- Press `<c-space>` to show the documentation manually.
       -- Scroll docs with <C-b> (up) and <C-f> (down)
       documentation = {
